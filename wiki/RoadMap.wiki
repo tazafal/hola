@@ -5,7 +5,7 @@
 ===GData Core===
   * Batch support
 
-===Service Specific library===
+===Service Specific Library===
   * Blogger Module
   * Spreadsheets Module
   * Code Search Module
