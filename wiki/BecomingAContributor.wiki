@@ -1,3 +1,4 @@
+#labels Featured
 =How to become a contributor and submit patches=
 
 We'd love to accept your code patches! However, before we can take them, we have to jump through a couple of legal hurdles.
@@ -9,5 +10,4 @@ http://code.google.com/legal/individual-cla-v1.0.html
 http://code.google.com/legal/corporate-cla-v1.0.html
 
 Once you have filled that out, please either fax it or send it via snail mail to us. Once we receive it, we'll add you to the official list of contributors and be able to accept your packages.
-
 
