@@ -1,0 +1,15 @@
+=GData Python Client Library Roadmap=
+
+ 
+===GData Core===
+  * Batch support
+
+===Service Specific library=== 
+  * Blogger Module
+  * Spreadsheets Module
+  * Code Search Module
+  * Notebook Module
+  * Code Search Module
+  
+
+
