@@ -1,6 +1,8 @@
 #labels Featured
 =How to become a contributor and submit patches=
 
+==Contributor License Agreements==
+
 We'd love to accept your code patches! However, before we can take them, we have to jump through a couple of legal hurdles.
 
 Please fill out either the individual or corporate Contributor License Agreement.
@@ -10,4 +12,12 @@ Please fill out either the individual or corporate Contributor License Agreement
 
 Follow either of the two links above to access the appropriate CLA and instructions for how to sign and return it. Once we receive it, we'll add you to the official list of contributors and be able to accept your packages.
 
+==Submitting Patches==
+
+  # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the GData Python Client Library issue tracker. Please don't mix more than one logical change per submittal, because it makes the history hard to follow. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please create one.
+  # Also, coordinate with team members that are listed on the issue in question. This ensures that work isn't being duplicated and communicating your plan early also generally leads to better patches.
+  # Ensure that your code adheres to the GData Python source code style.
+  # Ensure that there are unit tests for your code.
+  # Sign a Contributor License Agreement.
+  # Attach the code to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff).
 
