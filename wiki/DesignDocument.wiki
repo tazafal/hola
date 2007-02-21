@@ -6,19 +6,21 @@
 The document outlines the goals and general code structure for the GData client library.
 
 = Table of Contents =
-
-* Project Objectives
-* Supported Properties
+   * Project Objectives
+   ** Supported Properties
+   * Overview
 
 = Project Objectives =
 
 Provide an open source library to assist Python developers in using Google GData APIs. A secondary objective is to provide code for Atom and the Atom Publishing Protocol. This client library will form the foundation for the GData Python sample code.
 
-= Supported Properties =
+== Supported Properties ==
 
 The following GData web services are supported in this client library:
-* Google Base Data API
-* Google Calendar Data API
+   * Google Base Data API
+   * Google Calendar Data API
+
+= Overview = 
 
 
 
