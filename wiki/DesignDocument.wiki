@@ -7,8 +7,11 @@ The document outlines the goals and general code structure for the GData client 
 
 = Table of Contents =
    * Project Objectives
-   ** Supported Properties
+       ** Supported Properties
    * Overview
+       ** Sample Usage
+   * Detailed Design
+       ** Classes
 
 = Project Objectives =
 
@@ -69,3 +72,26 @@ feed = base_client.Query(base_query)
 # Print the name of the first author in the first entry in the feed.
 print feed.entry[0].author[0].name.GetText()
 }}}
+
+= Detailed Design =
+
+The client library is divided into the following modules:
+
+    * gdata_util: contains ElementWrapper, allows manipulation of XML data
+    * atom: contains Feed, Entry, ... facilitates creation of Atom compliant XML objects
+    * app_service: contains AtomService which provides HTTP CRUD operations on Atom feeds
+    * gdata: contains classes for GData specific extensions to the Atom data model
+    * gdata_service: contains GDataService which is the foundation for the other service classes. Extends AtomService and adds Google authentication.
+    * gbase: contains BaseItem, Label, etc.
+    * gbase_service: contains GBaseService which supports base query syntax (?bq="...")
+    * calendar: contains CalendarEvent, etc.
+    * calendar_service: contains CalendarService
+    * blogger (not in initial release)
+    * blogger_service (not in initial release)
+    * spreadsheet (not in initial release)
+    * spreadsheet_service (not in initial release)
+
+== Classes ==
+
+=== ElementWrapper ===
+
