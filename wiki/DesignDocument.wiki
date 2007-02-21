@@ -28,3 +28,43 @@ The service classes will provide methods to perform CRUD operations and queries 
 
 The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services. Data classes are provided for elements in Atom and GData, as well as elements specific to services like Google Base and Google Calendar. Programmers may also modify the XML by accessing the ElementTree which the data classes wrap.
 
+== Sample Usage ==
+
+A sample's worth a thousand words, so here's an example of client code which adds an item to Google Base.
+
+{{{
+import gbase_service
+import gbase
+import gdata_service
+
+base_client = gbase_service.GBaseService()
+# ...
+# Assign credentials, then login:
+try:
+  base_client.ProgrammaticLogin()
+except gdata_service.CaptchaRequired:
+# ...
+
+# handle captch challenge if needed, then proceed to create a new base item programatically:
+# (you could also build the item by parsing a string or reading a file)
+new_item = gbase.GBaseItem()
+new_item.author.SetText('Jeff Scudder')
+new_item.item_type.SetText('products')
+new_item.Add(gbase.Label(text='Computer'))
+# ...
+
+# Now add the item to Google Base
+success, created_item = base_client.InsertItem(new_item)
+if success:
+  # delete the item we just created
+  success, result = base_client.DeleteItem(created_item.id.GetText())
+
+# Search for some items in the snippets feed.
+base_query = gbase_service.Query()
+base_query['max_results'] = 50
+base_query['start_index'] = 100
+base_query['bq'] = '[item type: digital camera]'
+feed = base_client.Query(base_query)
+# Print the name of the first author in the first entry in the feed.
+print feed.entry[0].author[0].name.GetText()
+}}}
