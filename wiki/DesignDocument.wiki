@@ -20,11 +20,11 @@ The following GData web services are supported in this client library:
    * Google Base Data API
    * Google Calendar Data API
 
-= Overview = 
+= Overview =
 
 The client library contains two broad categories of classes: data models and service clients.
 
 The service classes will provide methods to perform CRUD operations and queries on Google web services. They will also contain a class for carrying operations in the Atom Publishing Protocol.
 
-The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services.
+The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services. Data classes are provided for elements in Atom and GData, as well as elements specific to services like Google Base and Google Calendar. Programmers may also modify the XML by accessing the ElementTree which the data classes wrap.
 
