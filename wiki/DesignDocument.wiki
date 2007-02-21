@@ -95,15 +95,15 @@ The client library is divided into the following modules:
 
 === ElementWrapper ===
 
-A convenience class which wraps the ElementTree and simplifies access to children in the tree. By overloading __getitem__ and __getattr__ I allow access to the attributes of an xml node using the following syntax:
+A convenience class which wraps the ElementTree and simplifies access to children in the tree. By overloading {{{__getitem__}}} and {{{__getattr__}}} I allow access to the attributes of an XML node using the following syntax:
 
 {{{element['attribute']}}}
 
-You can access children elements in the default namespaces using __getattr__ like this:
+You can access children elements in the default namespaces using {{{__getattr__}}} like this:
 
 {{{element.namedChild}}}
 
-The above actually performs a search within element for any children with a tag of namedChild in a list of namespaces (gdata_xml.GDATA_NAMESPACES). Here's a usage example. Instead of this ElementTree syntax:
+The above actually performs a search within element for any children with a tag of namedChild in a list of namespaces ({{{gdata_xml.GDATA_NAMESPACES}}}). Here's a usage example. Instead of this ElementTree syntax:
 
 {{{feed.findall('{http://http://www.w3.org/2005/Atom}entry')[5].findall('{http://http://base.google.com/ns/1.0}label')[2].text}}}
 
@@ -111,4 +111,4 @@ You can do the following:
 
 {{{feed.entry[5].label[2].GetText()}}}
 
-This __getattr__ based access is provided for convenience and is not required for use. Programmers can also use element.Get('tag', 'namespace') instead or just work with the ElementTree._Element which the wrapper contains by calling element.GetElementTree(). Here is a full list of ElementWrapper methods:
+This {{{__getattr__}}} based access is provided for convenience and is not required for use. Programmers can also use {{{element.Get('tag', 'namespace')}}} instead or just work with the {{{ElementTree._Element}}} which the wrapper contains by calling {{{element.GetElementTree()}}}. Here is a full list of ElementWrapper methods:
