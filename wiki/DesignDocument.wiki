@@ -111,4 +111,8 @@ You can do the following:
 
 {{{feed.entry[5].label[2].GetText()}}}
 
-This {{{__getattr__}}} based access is provided for convenience and is not required for use. Programmers can also use {{{element.Get('tag', 'namespace')}}} instead or just work with the {{{ElementTree._Element}}} which the wrapper contains by calling {{{element.GetElementTree()}}}. Here is a full list of ElementWrapper methods:
+This {{{__getattr__}}} based access is provided for convenience and is not required for use. Programmers can also use {{{element.Get('tag', 'namespace')}}} instead or just work with the {{{ElementTree._Element}}} which the wrapper contains by calling {{{element.GetElementTree()}}}. For a full list of ElementWrapper methods, take a look at the source code.
+
+=== atom.Entry ===
+
+A class representing an Atom Entry XML object. The Entry wraps an xml_wrapper.ElementWrapper and has class properties for all of the required and optional sub-elements. 
