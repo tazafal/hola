@@ -39,6 +39,7 @@ A sample's worth a thousand words, so here's an example of client code which add
 import gbase_service
 import gbase
 import gdata_service
+import atom
 
 base_client = gbase_service.GBaseService()
 # ...
@@ -54,6 +55,7 @@ new_item = gbase.GBaseItem()
 new_item.author.SetText('Jeff Scudder')
 new_item.item_type.SetText('products')
 new_item.Add(gbase.Label(text='Computer'))
+new_item.link.append(atom.Link())
 # ...
 
 # Now add the item to Google Base
