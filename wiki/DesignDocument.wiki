@@ -61,6 +61,7 @@ if success:
 
 # Search for some items in the snippets feed.
 base_query = gbase_service.Query()
+base_query.feed = gbase.SnippetsFeed
 base_query['max_results'] = 50
 base_query['start_index'] = 100
 base_query['bq'] = '[item type: digital camera]'
