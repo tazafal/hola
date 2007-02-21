@@ -115,4 +115,10 @@ This {{{__getattr__}}} based access is provided for convenience and is not requi
 
 === atom.Entry ===
 
-A class representing an Atom Entry XML object. The Entry wraps an xml_wrapper.ElementWrapper and has class properties for all of the required and optional sub-elements. 
+A class representing an Atom Entry XML object. The Entry wraps an xml_wrapper.ElementWrapper and has class properties for all of the required and optional sub-elements (such as Id, Link, Author, etc.). An Entry can be instantiated by specifying elements like so:
+
+{{{my_entry = atom.Entry(id=atom.Id(), title='<title xmlns="...">My Entry</title>')}}}
+
+Note that the sub-elements can be specified as strings, files, ElementTree Elements, or xml_wrapper.ElementWrappers.
+
+You can also access the underlying XML for the Entry by using {{{.element_tree}}} or {{{.element_wrapper}}}
