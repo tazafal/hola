@@ -22,7 +22,9 @@ The following GData web services are supported in this client library:
 
 = Overview = 
 
+The client library contains two broad categories of classes: data models and service clients.
 
+The service classes will provide methods to perform CRUD operations and queries on Google web services. They will also contain a class for carrying operations in the Atom Publishing Protocol.
 
-
+The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services.
 
