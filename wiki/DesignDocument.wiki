@@ -93,7 +93,7 @@ The client library is divided into the following modules:
 
 == Classes ==
 
-=== ElementWrapper ===
+=== xml_util.ElementWrapper ===
 
 A convenience class which wraps the ElementTree and simplifies access to children in the tree. By overloading {{{__getitem__}}} and {{{__getattr__}}} I allow access to the attributes of an XML node using the following syntax:
 
