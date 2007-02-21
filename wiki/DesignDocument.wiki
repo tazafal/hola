@@ -77,7 +77,7 @@ print feed.entry[0].author[0].name.GetText()
 
 The client library is divided into the following modules:
 
-    * gdata_util: contains ElementWrapper, allows manipulation of XML data
+    * xml_wrapper: contains ElementWrapper, allows manipulation of XML data
     * atom: contains Feed, Entry, ... facilitates creation of Atom compliant XML objects
     * app_service: contains AtomService which provides HTTP CRUD operations on Atom feeds
     * gdata: contains classes for GData specific extensions to the Atom data model
@@ -93,7 +93,7 @@ The client library is divided into the following modules:
 
 == Classes ==
 
-=== xml_util.ElementWrapper ===
+=== xml_wrapper.ElementWrapper ===
 
 A convenience class which wraps the ElementTree and simplifies access to children in the tree. By overloading {{{__getitem__}}} and {{{__getattr__}}} I allow access to the attributes of an XML node using the following syntax:
 
