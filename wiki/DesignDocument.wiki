@@ -1,0 +1,16 @@
+#summary Design Document for the GData Python Client Library.
+#labels Phase-Design
+
+= Introduction =
+
+The document outlines the goals and general code structure for the GData client library.
+
+= Project Objective =
+
+Provide an open source library to assist Python developers in using Google GData APIs. A secondary objective is to provide code for Atom and the Atom Publishing Protocol. 
+
+
+
+
+
+
