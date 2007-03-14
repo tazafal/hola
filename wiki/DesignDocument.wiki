@@ -52,27 +52,29 @@ except gdata_service.CaptchaRequired:
 # handle captch challenge if needed, then proceed to create a new base item programatically:
 # (you could also build the item by parsing a string or reading a file)
 new_item = gbase.GBaseItem()
-new_item.author.SetText('Jeff Scudder')
-new_item.item_type.SetText('products')
-new_item.Add(gbase.Label(text='Computer'))
+new_item.author = atom.Author(name=atom.Name(text='Jeff Scudder'))
+new_item.item_type = gbase.ItemType(text='products')
+new_item.label.append(gbase.Label(text='Computer'))
 new_item.link.append(atom.Link())
 # ...
 
 # Now add the item to Google Base
-success, created_item = base_client.InsertItem(new_item)
-if success:
+try:
+  created_item = base_client.InsertItem(new_item)
   # delete the item we just created
-  success, result = base_client.DeleteItem(created_item.id.GetText())
+  delete_succeeded = base_client.DeleteItem(created_item.id.GetText())
+except gdata.RequestError:
+  print 'Operation failed'
 
 # Search for some items in the snippets feed.
 base_query = gbase_service.Query()
 base_query.feed = gbase.SnippetsFeed
 base_query['max_results'] = 50
 base_query['start_index'] = 100
-base_query['bq'] = '[item type: digital camera]'
+base_query.bq = '[item type: digital camera]'
 feed = base_client.Query(base_query)
 # Print the name of the first author in the first entry in the feed.
-print feed.entry[0].author[0].name.GetText()
+print feed.entry[0].author[0].name.text
 }}}
 
 = Detailed Design =
