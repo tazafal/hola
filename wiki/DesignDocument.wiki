@@ -81,48 +81,25 @@ print feed.entry[0].author[0].name.text
 
 The client library is divided into the following modules:
 
-    * xml_wrapper: contains ElementWrapper, allows manipulation of XML data
     * atom: contains Feed, Entry, ... facilitates creation of Atom compliant XML objects
     * app_service: contains AtomService which provides HTTP CRUD operations on Atom feeds
     * gdata: contains classes for GData specific extensions to the Atom data model
     * gdata_service: contains GDataService which is the foundation for the other service classes. Extends AtomService and adds Google authentication.
     * gbase: contains BaseItem, Label, etc.
-    * gbase_service: contains GBaseService which supports base query syntax (?bq="...")
-    * calendar: contains CalendarEvent, etc.
-    * calendar_service: contains CalendarService
+    * gbase_service: contains GBaseService and BaseQuery which supports base query syntax (?bq="...")
+    * gcalendar: contains CalendarEvent, etc.
+    * gcalendar_service: contains CalendarService
     * blogger (not in initial release)
     * blogger_service (not in initial release)
-    * spreadsheet (not in initial release)
-    * spreadsheet_service (not in initial release)
+    * gspreadsheet: contains GSpreadsheetsSpreadsheet, GSpreadsheetsWorksheet, GSpreadsheetsCell, etc.
+    * gspreadsheet_service: contains GSpreadsheetsService 
 
 == Classes ==
 
-=== xml_wrapper.ElementWrapper ===
-
-A convenience class which wraps the ElementTree and simplifies access to children in the tree. By overloading {{{__getitem__}}} and {{{__getattr__}}} I allow access to the attributes of an XML node using the following syntax:
-
-{{{element['attribute']}}}
-
-You can access children elements in the default namespaces using {{{__getattr__}}} like this:
-
-{{{element.namedChild}}}
-
-The above actually performs a search within element for any children with a tag of namedChild in a list of namespaces ({{{gdata_xml.GDATA_NAMESPACES}}}). Here's a usage example. Instead of this ElementTree syntax:
-
-{{{feed.findall('{http://http://www.w3.org/2005/Atom}entry')[5].findall('{http://http://base.google.com/ns/1.0}label')[2].text}}}
-
-You can do the following:
-
-{{{feed.entry[5].label[2].GetText()}}}
-
-This {{{__getattr__}}} based access is provided for convenience and is not required for use. Programmers can also use {{{element.Get('tag', 'namespace')}}} instead or just work with the {{{ElementTree._Element}}} which the wrapper contains by calling {{{element.GetElementTree()}}}. For a full list of ElementWrapper methods, take a look at the source code.
-
 === atom.Entry ===
 
-A class representing an Atom Entry XML object. The Entry wraps an xml_wrapper.ElementWrapper and has class properties for all of the required and optional sub-elements (such as Id, Link, Author, etc.). An Entry can be instantiated by specifying elements like so:
+A class representing an Atom Entry XML object. The Entry contains other Atom classes in the Atom module to represent the information in an Entry. It has class properties for all of the required and optional sub-elements (such as Id, Link, Author, etc.). An Entry can be instantiated by specifying elements like so:
 
-{{{my_entry = atom.Entry(id=atom.Id(), title='<title xmlns="...">My Entry</title>')}}}
+{{{my_entry = atom.Entry(id=atom.Id(), title=atom.Title(text='My Entry'))}}}
 
-Note that the sub-elements can be specified as strings, files, ElementTree Elements, or xml_wrapper.ElementWrappers.
-
-You can also access the underlying XML for the Entry by using {{{.element_tree}}} or {{{.element_wrapper}}}
+Before being sent to the server in a POST or PUT, the Entry instance is converted to a string of XML, and the server's response (if the operation was successful) can be translated into an Atom Entry using the EntryFromString function.
