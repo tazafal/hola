@@ -1,0 +1,13 @@
+#summary Instructions for running the spreadsheets example script.
+#labels Phase-Deploy,Spreadsheets,Example
+
+= Introduction =
+
+These instructions will guide you through running the example script which illustrates performing common operations using the spreadsheets modules. 
+
+= Details =
+
+==Execution Environment==
+
+Make sure that the required modules are in your Python Path. See DependancyModules for a list of things you may need to install.
+
