@@ -1,14 +1,15 @@
-#labels Featured
+#labels Featured,Phase-Implementation,Roadmap
 =GData Python Client Library Roadmap=
 
  
 ===GData Core===
   * Batch support
+  * Secure AuthSub mode support
 
 ===Service Specific Library===
   * Blogger Module
-  * Spreadsheets Module
   * Code Search Module
   * Notebook Module
   * Code Search Module
+  * Picasa Web Albums Module
   
