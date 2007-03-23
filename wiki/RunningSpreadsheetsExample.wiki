@@ -10,3 +10,7 @@ These instructions will guide you through running the example script which illus
 ==Execution Environment==
 
 Make sure that the required modules are in your Python Path. See DependancyModules for a list of things you may need to install.
+
+==Running the example==
+
+You can run the example from the main project directory by executing {{{python samples/spreadsheets/spreadsheetExample.py --user}}} _your user name_ {{{--pw}}} _your password_
