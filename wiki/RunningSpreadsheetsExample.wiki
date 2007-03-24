@@ -1,4 +1,4 @@
-#summary Instructions for running the spreadsheets example script.
+#summary Instructions for running the Google Spreadsheets example script.
 #labels Phase-Deploy,Spreadsheets,Example
 
 = Introduction =
