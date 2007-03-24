@@ -11,9 +11,6 @@ These instructions will guide you through running the example script which illus
 
 Make sure that the required modules are in your Python Path. See DependancyModules for a list of things you may need to install.
 
-
-Make sure that the required modules are in your Python Path. See DependancyModules for a list of things you may need to install.
-
 ==Running the example==
 
 You can run the example from the main project directory by executing {{{python samples/base/dryRunInsert.py}}}.
