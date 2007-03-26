@@ -37,3 +37,14 @@ import w
 ===Global Variables===
 
 Global (module visible) variables should only be used for constants. 
+
+===Default Argument Values===
+
+Feel free to use them in accordance with the following guidelines
+   * Do not use mutable types for default values (lists, dicts, etc)
+   * When calling the method, specify the name of the default value, example:
+{{{
+Foo(1)
+Foo(1, b=2)
+}}}
+
