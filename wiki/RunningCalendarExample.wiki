@@ -1,4 +1,5 @@
 #summary Instructions for running the Google Calendar example script.
+#labels CalendarExample
 
 = Introduction =
 
