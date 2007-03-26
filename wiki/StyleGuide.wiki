@@ -1,4 +1,5 @@
 #summary Coding style guide for project contributors.
+#labels Phase-Implementation,Style
 
 = Introduction =
 
@@ -6,5 +7,30 @@ Additions and modifications to the code in this project should conform to these 
 
 
 = Rules =
-||topic||a||b||c||
-||d||e||f||g||
+
+===Naming conventions===
+
+||*Type*|| *Public*|| *Internal* ||
+||Packages|| {{{lower_with_under}}}  || ||
+||Modules ||{{{lower_with_under}}} ||{{{_lower_with_under}}} ||
+||Classes || {{{CapWords}}} || {{{_CapWords}}} ||
+||Exceptions || {{{CapWords}}}  || ||
+||Functions || {{{CapWords()}}} || {{{_CapWords()}}} ||
+||Global/Class Constants || {{{CAPS_WITH_UNDER}}} || {{{_CAPS_WITH_UNDER}}} ||
+||Global/Class Variables || {{{lower_with_under}}} || {{{_lower_with_under}}} ||
+||Instance Variables || {{{lower_with_under}}} ||{{{_lower_with_under}}} (protected) or {{{__lower_with_under}}} (private) ||
+||Method Names || {{{CapWords()}}} || {{{_CapWords()}}} (protected) or {{{__CapWords()}}} (private) ||
+||Setter/Getter Method Names || {{{foo()}}}, {{{set_foo()}}}  || ||
+||Function/Method Parameters || {{{lower_with_under}}}  || ||
+||Local Variables || {{{lower_with_under}}} || ||
+
+
+===Imports===
+
+Always import modules explicitly - never use {{{from x import *}}}, instead use 
+{{{
+from x import y
+from x import z
+import w
+}}}
+
