@@ -34,3 +34,6 @@ from x import z
 import w
 }}}
 
+===Global Variables===
+
+Global (module visible) variables should only be used for constants. 
