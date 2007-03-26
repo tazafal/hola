@@ -1,0 +1,10 @@
+#summary Coding style guide for project contributors.
+
+= Introduction =
+
+Additions and modifications to the code in this project should conform to these style guidelines. 
+
+
+= Rules =
+||topic||a||b||c||
+||d||e||f||g||
