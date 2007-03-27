@@ -48,3 +48,6 @@ Foo(1)
 Foo(1, b=2)
 }}}
 
+===Line Length===
+
+80 characters
