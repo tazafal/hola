@@ -1,5 +1,5 @@
 #summary Modules required by the GData Python Client Library.
-#labels Phase-Deploy,require-modules,dependancies
+#labels Phase-Deploy
 
 = Introduction =
 
@@ -9,11 +9,10 @@ The modules in the project depend on the following modules. If they are not pres
 
 Element Tree is a module for XML parsing and processing. Instructions for downloading and configuring this module can be found here: http://effbot.org/zone/element-index.htm
 
-===HTTP Lib===
+===httplib===
 
-HTTP Lib has been part of the core Python library since version 2.0, so it should already be present on your system.
+httplib has been part of the core Python library since version 2.0, so it should already be present on your system.
 
-===URL Lib===
+===urllib===
 
-URL Lib is also a core Python library, so you should not have to install it.
-
+urllib is also a core Python library, so you should not have to install it.
