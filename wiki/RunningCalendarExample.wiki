@@ -9,7 +9,7 @@ These instructions will guide you through running the example script which illus
 
 ==Execution Environment==
 
-Make sure that the required modules are in your Python Path. See DependancyModules for a list of things you may need to install.
+Make sure that the required modules are in your Python Path. See DependencyModules for a list of things you may need to install.
 
 ==Running the example==
 
