@@ -1,9 +1,9 @@
-#summary Design Document for the GData Python Client Library.
+#summary Design Document for the Google data Python Client Library.
 #labels Phase-Design
 
 = Introduction =
 
-The document outlines the goals and general code structure for the GData client library.
+The document outlines the goals and general code structure for the Google data client library.
 
 = Table of Contents =
    * Project Objectives
@@ -15,11 +15,11 @@ The document outlines the goals and general code structure for the GData client 
 
 = Project Objectives =
 
-Provide an open source library to assist Python developers in using Google GData APIs. A secondary objective is to provide code for Atom and the Atom Publishing Protocol. This client library will form the foundation for the GData Python sample code.
+Provide an open source library to assist Python developers in using Google data APIs. A secondary objective is to provide code for Atom and the Atom Publishing Protocol. This client library will form the foundation for the Google data Python sample code.
 
 == Supported Properties ==
 
-The following GData web services are supported in this client library:
+The following Google data web services are supported in this client library:
    * Google Base Data API
    * Google Calendar Data API
 
@@ -29,7 +29,7 @@ The client library contains two broad categories of classes: data models and ser
 
 The service classes will provide methods to perform CRUD operations and queries on Google web services. They will also contain a class for carrying operations in the Atom Publishing Protocol.
 
-The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services. Data classes are provided for elements in Atom and GData, as well as elements specific to services like Google Base and Google Calendar. Programmers may also modify the XML by accessing the ElementTree which the data classes wrap.
+The data model classes simplify the construction and manipulation of XML for the resources accessed through the web services. Data classes are provided for elements in Atom and Google data, as well as elements specific to services like Google Base and Google Calendar. Programmers may also modify the XML by accessing the ElementTree which the data classes wrap.
 
 == Sample Usage ==
 
@@ -83,7 +83,7 @@ The client library is divided into the following modules:
 
     * atom: contains Feed, Entry, ... facilitates creation of Atom compliant XML objects
     * app_service: contains AtomService which provides HTTP CRUD operations on Atom feeds
-    * gdata: contains classes for GData specific extensions to the Atom data model
+    * gdata: contains classes for Google data specific extensions to the Atom data model
     * gdata_service: contains GDataService which is the foundation for the other service classes. Extends AtomService and adds Google authentication.
     * gbase: contains BaseItem, Label, etc.
     * gbase_service: contains GBaseService and BaseQuery which supports base query syntax (?bq="...")
