@@ -51,3 +51,9 @@ Foo(1, b=2)
 ===Line Length===
 
 80 characters
+
+===Blank Lines===
+
+1 blank line between methods within a class, between the docstring and code and within a method to break the instructions into logical sections.
+
+2 blank lines between top level definitions. 
