@@ -1,8 +1,8 @@
 #labels Featured,Phase-Implementation,Roadmap
-=GData Python Client Library Roadmap=
+=Google Data Python Client Library Roadmap=
 
  
-===GData Core===
+===Google Data Core===
   * Batch support
   * Secure AuthSub mode support
 
