@@ -1,4 +1,4 @@
-#summary Modules required by the GData Python Client Library.
+#summary Modules required by the Google data Python Client Library.
 #labels Phase-Deploy
 
 = Introduction =
