@@ -3,7 +3,7 @@
 
 = Introduction =
 
-The document outlines the goals and general code structure for the Google data client library.
+The document outlines the goals and general code structure for the Google data client library. This document was part of the initial design process and the actual code in the client library may differ from this preliminary design.
 
 = Table of Contents =
    * Project Objectives
@@ -36,23 +36,23 @@ The data model classes simplify the construction and manipulation of XML for the
 A sample's worth a thousand words, so here's an example of client code which adds an item to Google Base.
 
 {{{
-import gbase_service
-import gbase
-import gdata_service
+import gdata.base.service
+import gdata.base
+import gdata.service
 import atom
 
-base_client = gbase_service.GBaseService()
+base_client = gdata.base.service.GBaseService()
 # ...
 # Assign credentials, then login:
 try:
   base_client.ProgrammaticLogin()
-except gdata_service.CaptchaRequired:
+except gdata.service.CaptchaRequired:
 # ...
 
 # handle captch challenge if needed, then proceed to create a new base item programatically:
 # (you could also build the item by parsing a string or reading a file)
-new_item = gbase.GBaseItem()
-new_item.author = atom.Author(name=atom.Name(text='Jeff Scudder'))
+new_item = gdata.base.GBaseItem()
+new_item.author.append(atom.Author(name=atom.Name(text='Jeff Scudder')))
 new_item.item_type = gbase.ItemType(text='products')
 new_item.label.append(gbase.Label(text='Computer'))
 new_item.link.append(atom.Link())
@@ -62,17 +62,17 @@ new_item.link.append(atom.Link())
 try:
   created_item = base_client.InsertItem(new_item)
   # delete the item we just created
-  delete_succeeded = base_client.DeleteItem(created_item.id.GetText())
+  delete_succeeded = base_client.DeleteItem(created_item.id.text)
 except gdata.RequestError:
   print 'Operation failed'
 
 # Search for some items in the snippets feed.
-base_query = gbase_service.Query()
-base_query.feed = gbase.SnippetsFeed
+base_query = gdata.base.service.BaseQuery()
+base_query.feed = '/base/feeds/snippets'
 base_query['max_results'] = 50
 base_query['start_index'] = 100
 base_query.bq = '[item type: digital camera]'
-feed = base_client.Query(base_query)
+feed = base_client.Query(base_query.ToUri())
 # Print the name of the first author in the first entry in the feed.
 print feed.entry[0].author[0].name.text
 }}}
