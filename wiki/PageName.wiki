@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Some GData APIs, such as Picasa Web, allow binary and multipart POSTs and PUTs rather than simply XML.  The Python client library now provides methods that can be used for these operations.
+Some GData APIs, such as Picasa Web, allow binary and multipart POSTs and PUTs.  The Python client library now provides methods that can be used for these operations.
 
 
 = Details =
@@ -13,14 +13,14 @@ There are a few media-related operations:  Create, Update, and Read.  Deletion i
 
 There are two ways to create a media entry -- with and without metadata.
 
-To create a new media entry without metadata, first create a MediaSource class and populate it with the source of your media:
+To create a new media entry without metadata, first create a !MediaSource class and populate it with the source of your media:
 
 {{{
 ms = gdata.MediaSource()
 ms.setFile('testimage.jpg', 'image/jpeg')
 }}}
 
-Then, POST this MediaSource class to the feed:
+Then, POST this !MediaSource class to the feed:
 
 {{{
 media_entry = gd_client.Post(None, albumFeedURL, media_source = ms)
@@ -42,7 +42,7 @@ The entry returned is a GData Media entry containing links to the created media.
 
 There are two parts of a Media entry that can be updated: the media itself, and its metadata.  These operations are done in the same way as shown above, with the operation changed to Put.
 
-To update only the media itself, first create a MediaSource containing the new media and use the Put method to update the entry.  Note that the "edit-media" link should be used as the URI:
+To update only the media itself, first create a !MediaSource containing the new media and use the Put method to update the entry.  Note that the "edit-media" link should be used as the URI:
 
 {{{
 ms = gdata.MediaSource()
@@ -67,7 +67,7 @@ The media data itself is not included in the entries returned by Google data fee
 media_url = media_entry.GetMediaURL()
 }}}
 
-To get a MediaSource containing a handle to the media along with the length and content type, use the GetMedia method on a GData Service:
+To get a !MediaSource containing a handle to the media along with the length and content type, use the !GetMedia method on a GData Service:
 
 {{{
 imageSource = gd_client.GetMedia(media_entry2.GetMediaURL())
@@ -80,3 +80,4 @@ Deleting a Media entry is accomplished in the same way as any other GData entry.
 {{{
 gd_client.Delete(media_entry.GetEditLink().href)
 }}}
+
