@@ -11,7 +11,7 @@ The XML parsing and generation for this library is carried out by ElementTree. T
 
 If you are using Python version 2.5 or higher, you will not need to install this package separately.
 
-Instructions for downloading and configuring cElementTree can be found here: http://www.effbot.org/zone/celementtree.htm
+Instructions for downloading and configuring cElementTree can be found here: http://effbot.org/zone/celementtree.htm
 
 Instructions for downloading and configuring ElementTree can be found here: http://effbot.org/zone/element-index.htm
 
