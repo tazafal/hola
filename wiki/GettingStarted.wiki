@@ -1,0 +1,24 @@
+#summary How to configure your environment to use this library.
+#labels Phase-Deploy
+
+= Introduction =
+
+See this article: [http://code.google.com/support/bin/answer.py?answer=75582 Getting Started With the Google Data Python Library]
+
+
+= Details =
+
+The article I've linked to covers the following topics:
+  * Introduction
+  * Installing Python
+    * On Windows
+    * On Mac OS X
+    * On Linux
+  * Installing Dependencies
+  * Installing the Google Data Library
+  * Running Tests and Samples
+  * Writing A "Hello World" Example
+  * Conclusion
+  * Appendix: Modifying the PYTHONPATH
+ 
+ 
