@@ -1,4 +1,4 @@
-#summary Discription of the new way in which data model classes are defined in version 1.0.8 and later.
+#summary Discribes the new way data model classes are defined in version 1.0.8 and later.
 
 = Introduction =
 
@@ -81,4 +81,5 @@ class When(atom.AtomBase):
           element_tree)
 }}}
 
+ 
  
