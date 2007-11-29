@@ -3,13 +3,10 @@
 
  
 ===Google Data Core===
-  * Batch support
   * Secure AuthSub mode support
 
 ===Service Specific Library===
   * Blogger Module
-  * Code Search Module
   * Notebook Module
-  * Code Search Module
-  * Picasa Web Albums Module
+  * YouTube Module
   
