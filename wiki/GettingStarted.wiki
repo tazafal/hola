@@ -1,5 +1,5 @@
 #summary How to configure your environment to use this library.
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 
 = Introduction =
 
