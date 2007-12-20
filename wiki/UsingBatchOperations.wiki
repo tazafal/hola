@@ -1,5 +1,5 @@
 #labels Phase-Implementation,BatchOperations
-#Demonstrated using batch requests to perform multiple operations in Google Base.
+Demonstrated using batch requests to perform multiple operations in Google Base.
 
 = Introduction =
 
@@ -17,9 +17,9 @@ The following code assumes that you already have an authenticated client object 
 {{{
 # Create two items using a batch request.
 request_feed = gdata.base.GBaseItemFeed(atom_id=atom.Id(text='test batch'))
-entry1 = gdata.base.GBaseItemFromString('<your new item's XML goes here>')
+entry1 = gdata.base.GBaseItemFromString('--your new item's XML goes here--')
 entry1.title.text = 'first batch request item'
-entry2 = gdata.base.GBaseItemFromString('<XML for the second item here>')
+entry2 = gdata.base.GBaseItemFromString('--XML for the second item here--')
 entry2.title.text = 'second batch request item'
 request_feed.AddInsert(entry1)
 request_feed.AddInsert(entry2)
