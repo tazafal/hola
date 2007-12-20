@@ -1,0 +1,35 @@
+#labels Phase-Implementation,BatchOperations
+#Demonstrated using batch requests to perform multiple operations in Google Base.
+
+= Introduction =
+
+I've posted a short code snippet illustrating how to form a batch request for Google Base. The same general principle applies for other service which support batch requests such as Google Calendar and Google Spreadsheets.
+
+= Details =
+
+== Batch Requests ==
+
+Batch requests allow you to send multiple operations in a single HTTP request and may make your software run more quickly by minimizing the number of HTTP requests. To create a batch request, construct a feed with an entry for each operation you would like to perform which includes the desired operation and any entry data which you may need (for example, the new contents which an entry should contain). For more information on batch requests see: http://code.google.com/apis/gdata/batch.html
+
+== Example Code ==
+
+The following code assumes that you already have an authenticated client object which is named {{{gd_client}}}. 
+{{{
+# Create two items using a batch request.
+request_feed = gdata.base.GBaseItemFeed(atom_id=atom.Id(text='test batch'))
+entry1 = gdata.base.GBaseItemFromString('<your new item's XML goes here>')
+entry1.title.text = 'first batch request item'
+entry2 = gdata.base.GBaseItemFromString('<XML for the second item here>')
+entry2.title.text = 'second batch request item'
+request_feed.AddInsert(entry1)
+request_feed.AddInsert(entry2)
+    
+result_feed = gd_client.ExecuteBatch(request_feed)
+
+# Now delete the newly created items.
+request_feed = gdata.base.GBaseItemFeed(atom_id=atom.Id(text='test deletions'))
+request_feed.AddDelete(entry=result_feed.entry[0])
+request_feed.AddDelete(entry=result_feed.entry[1])
+    
+result_feed = self.gd_client.ExecuteBatch(request_feed)
+}}}
