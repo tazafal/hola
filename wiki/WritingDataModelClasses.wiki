@@ -2,8 +2,7 @@ Describes how to write a class used to parse the XML and convert it into python 
 
 = Introduction =
 
-Add your content here.
-
+This document begins with a short overview on how to extend the classes that parse XML without worrying about how the parsing works. 
 
 = Details =
 
