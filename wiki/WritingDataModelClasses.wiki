@@ -1,12 +1,29 @@
+#labels Phase-Implementation
 Describes how to write a class used to parse the XML and convert it into python objects. 
 
 = Introduction =
 
 This document begins with a short overview on how to extend the classes that parse XML without worrying about how the parsing works. 
 
-= Details =
+= Short Example =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Lets say that you have a service (lets call it the Pizza Party Feed) and you want to create modules which work on top of the gdata-python-client library. As with all of the Google Data API feeds, your feed begins with Atom and adds additional elements to represent information unique to your application (like the type of pizza that will be at your party, the number of people you can house, etc.). The atom module will handle parsing for the standard Atom elements, but it's up to you to provide a module to parse the elements specific to your feed (Pizza Party pizza, toppings, etc.). 
+
+Your hypothetical feed has entries that look like this:
+{{{
+<entry xmlns='http://www.w3.org/2005/Atom' xmlns:p='http://example.com/pizza/1.0'>
+  <id>http://www.example.com/pizzaparty/223</id>
+  <title type='text'>Pizza at my house!</title>
+  <author>
+    <name>Joe</name>
+    <email>joe@example.com</email>
+  </author>
+  <content type='text'>
+    Join us for a fun filled evening of fun, games, and pizza!
+  </content>
+  <link rel='alternate' type='text/html'
+        href='http://www.example.com/joe_user/pizza_at_my_house.html'/>
+  <p:pizza toppings='pepperoni, sausage' size='large'>Pepperoni with cheese and sausage</p:pizza>
+  <p:capacity>25</p:capacity>
+</entry>
+}}}
