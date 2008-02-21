@@ -19,7 +19,7 @@ Your hypothetical feed has entries that look like this:
     <email>joe@example.com</email>
   </author>
   <content type='text'>
-    Join us for a fun filled evening of fun, games, and pizza!
+    Join us for a fun filled evening of pizza and games!
   </content>
   <link rel='alternate' type='text/html'
         href='http://www.example.com/joe_user/pizza_at_my_house.html'/>
