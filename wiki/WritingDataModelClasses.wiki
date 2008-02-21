@@ -23,7 +23,10 @@ Your hypothetical feed has entries that look like this:
   </content>
   <link rel='alternate' type='text/html'
         href='http://www.example.com/joe_user/pizza_at_my_house.html'/>
-  <p:pizza toppings='pepperoni, sausage' size='large'>Pepperoni with cheese and sausage</p:pizza>
+  <p:pizza toppings='pepperoni, sausage' size='large'>Pepperoni with cheese and 
+sausage</p:pizza>
+  <p:pizza toppings='mushrooms' size='medium'>Mushroom</p:pizza>
+  <p:pizza toppings='ham, pineapple' size='extra large'>Hawaiian</p:pizza>
   <p:capacity>25</p:capacity>
 </entry>
 }}}
