@@ -40,3 +40,22 @@ class Capacity(atom.AtomBase):
   _namespace = PIZZA_NAMESPACE
 }}}
 That's all we need for capacity. Since this element only has a text node, we don't need to define anything more that it's local tag name and namespace. We do not need to define an __init__ constructor or any other methods because the processing for the XML and the text content is inherited from AtomBase.
+
+Next we define a class for {{{pizza}}} notice that this element has some XML attributes.
+{{{
+class Pizza(atom.AtomBase):
+  _tag = 'pizza'
+  _namespace = PIZZA_NAMESPACE
+  _attributes = atom.AtomBase._attributes.copy()
+  _attributes['toppings'] = 'toppings'
+  _attributes['size'] = 'size'
+  
+  def __init__(self, toppings=None, size=None, text=None, 
+      extension_elements=None, extension_attributes=None):
+    self.toppings = toppings
+    self.size = size
+    # Call the constructor function for AtomBase to initialize
+    # inherited members.
+    atom.AtomBase.__init__(self, extension_elements=extension_elements,
+        extension_attributes=extension_attributes, text=text)
+}}}
