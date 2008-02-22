@@ -59,3 +59,86 @@ class Pizza(atom.AtomBase):
     atom.AtomBase.__init__(self, extension_elements=extension_elements,
         extension_attributes=extension_attributes, text=text)
 }}}
+The above class specified the XML attributes (using {{{_attributes['XML_Attribute_Name']}}} and the class members which store their values (the attributes dictionary gets the value 'member_name'). The constructor for the class needs to accept values for the attribute members as parameters (self.member_name). 
+
+Next we'll define classes for {{{location}}} and {{{address}}} which are nested elements. 
+{{{
+class Address(atom.AtomBase):
+  _tag = 'address'
+  _namespace = PIZZA_NAMESPACE
+
+class Location(atom.AtomBase):
+  _tag = 'location'
+  _namespace = PIZZA_NAMESPACE
+  _children = atom.AtomBase._children.copy()
+  _children['{%s}address' % PIZZA_NAMESPACE] = ('address', Address)
+  
+  def __init__(self, address=None, text=None, extension_elements=None,
+      extension_attributes=None):
+    self.address = address
+    atom.AtomBase.__init__(self, extension_elements=extension_elements,
+        extension_attributes=extension_attributes, text=text)
+}}}
+The new concept introduced in the {{{Location}}} class is the mapping of a child element to the class used to parse it's XML and the member the child element is stored in. The classes are mapped in a dictionary in the form {{{_children['{namespace}tag'] = ('member_name', MemberClass)}}}
+
+We have now defined everything but the Entry which contains the data. 
+{{{
+class PizzaEntry(gdata.GDataEntry):
+  _tag = 'entry'
+  _namespace = atom.ATOM_NAMESPACE
+  _children = gdata.GDataEntry._children.copy()
+  _children['{%s}pizza' % PIZZA_NAMESPACE] = ('pizza', [Pizza])
+  _children['{%s}capacity' % PIZZA_NAMESPACE] = ('capacity', Capacity)
+  _children['{%s}location' % PIZZA_NAMESPACE] = ('location', Location)
+  
+  def __init__(self, pizza=None, capacity=None, location=None, author=None,
+      category=None, content=None, contributor=None, atom_id=None, link=None,
+      published=None, rights=None, source=None, summary=None, title=None, 
+      control=None, updated=None, text=None, extension_elements=None, 
+      extension_attributes=None):
+    self.pizza = pizza or []
+    self.capacity = capacity
+    self.location = location
+    gdata.GDataEntry.__init__(self, author=author, category=category, 
+        content=content, contributor=contributor, atom_id=atom_id, 
+        link=link, published=published, rights=rights, source=source,
+        summary=summary, control=control, title=title, updated=updated,
+        extension_elements=extension_elements, 
+        extension_attributes=extension_attributes, text=text)
+}}}
+Note in the above that the mapping for the {{{pizza}}} XML element specifies {{{[Pizza]}}} to represent a list of {{{Pizza}}} class instances. The entry can contain multiple {{{pizza}}} elements, and this is represented by enclosing a list of Classes instead of just the Class. 
+
+We also need to define functions to convert a string to an instance of one of the above classes. These functions are especially useful in CRUD operations. The Get, Post, Put, and Delete methods take an optional converter function and you could use one of these to convert the server's response into the desired object.
+
+{{{
+def CapacityFromString(xml_string):
+  return atom.CreateClassFromXMLString(Capacity, xml_string)
+
+
+def PizzaFromString(xml_string):
+  return atom.CreateClassFromXMLString(Pizza, xml_string)
+
+
+def AddressFromString(xml_string):
+  return atom.CreateClassFromXMLString(Address, xml_string)
+
+
+def LocationFromString(xml_string):
+  return atom.CreateClassFromXMLString(Location, xml_string)
+
+
+def PizzaEntryFromString(xml_string):
+  return atom.CreateClassFromXMLString(PizzaEntry, xml_string)
+}}}
+You should also define a feed to contain the new entry you defined. This might look something like this:
+{{{
+class PizzaFeed(gdata.GDataFeed):
+  _tag = 'feed'
+  _namespace = atom.ATOM_NAMESPACE
+  _children = gdata.GDataFeed._children.copy()
+  _children['{%s}entry' % atom.ATOM_NAMESPACE] = ('entry', [PizzaEntry])
+
+
+def PizzaFeedFromString(xml_string):
+  return atom.CreateClassFromXMLString(PizzaFeed, xml_string)
+}}}
