@@ -31,3 +31,12 @@ sausage</p:pizza>
   <p:location>My place.<p:address>123 Imaginary Ln, Sometown MO 63000<p:/address></p:location>
 </entry>
 }}}
+To define classes that parse this XML, we need to begin by defining the classes for the inner elements first. Lets start with the {{{capacity}}} element since it is simple.
+{{{
+PIZZA_NAMESPACE = 'http://example.com/pizza/1.0'
+
+class Capacity(atom.AtomBase):
+  _tag = 'capacity'
+  _namespace = PIZZA_NAMESPACE
+}}}
+That's all we need for capacity. Since this element only has a text node, we don't need to define anything more that it's local tag name and namespace. We do not need to define an __init__ constructor or any other methods because the processing for the XML and the text content is inherited from AtomBase.
