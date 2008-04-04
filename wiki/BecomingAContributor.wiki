@@ -20,4 +20,4 @@ Follow either of the two links above to access the appropriate CLA and instructi
   # Ensure that your code adheres to the [http://code.google.com/p/gdata-python-client/wiki/StyleGuide Google data Python source code style].
   # Ensure that there are unit tests for your code.
   # Sign a Contributor License Agreement.
-  # Attach the code to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff).
+  # Attach the code (including unit tests) to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff).
