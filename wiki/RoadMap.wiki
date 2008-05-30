@@ -4,9 +4,11 @@
  
 ===Google Data Core===
   * Secure AuthSub mode support
+  * OAuth support
 
 ===Service Specific Library===
   * Blogger Module
   * Notebook Module
   * YouTube Module
+  * Health Module
   
