@@ -5,10 +5,10 @@
 ===Google Data Core===
   * Secure AuthSub mode support
   * OAuth support
+  * Use unicode encoding by default
 
 ===Service Specific Library===
-  * Blogger Module
-  * Notebook Module
-  * YouTube Module
   * Health Module
+  * Notebook Module
+
   
