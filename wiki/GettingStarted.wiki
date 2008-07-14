@@ -3,7 +3,7 @@
 
 = Introduction =
 
-See this article: [http://code.google.com/support/bin/answer.py?answer=75582 Getting Started With the Google Data Python Library]
+See this article: [http://code.google.com/apis/gdata/articles/python_client_lib.html Getting Started With the Google Data Python Library]
 
 
 = Details =
