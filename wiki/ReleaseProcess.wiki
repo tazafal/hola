@@ -13,7 +13,7 @@ Releasing a new download requires a few steps to be performed. For each release,
     # if any new files have been added in this release, list them in the pydoc shell script: {{{pydocs/generate_docs}}}
     # run the {{{pydocs/generate_docs}}} script
   # Add new packages and files to the indexes so that they will be include in the archives and installed.
-    # edit the {{{MANIFEST}}} file, which lists all of the files which should be included in the .zip and .tzr.gz archives
+    # edit the {{{MANIFEST}}} file, which lists all of the files which should be included in the .zip and .tar.gz archives
     # edit the list of packages in {{{setup.py}}}. This list determines which packages will be compiled and installed on the user's system.
   # Generate the download archives
     # run {{{python setup.py sdist --formats=gztar,zip}}} which will create {{{gdata.py-<version.number>.zip}}} and {{{.tar.gz}}} files in the {{{dist}}} directory.
