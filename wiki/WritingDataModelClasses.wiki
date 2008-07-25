@@ -59,7 +59,7 @@ class Pizza(atom.AtomBase):
     atom.AtomBase.__init__(self, extension_elements=extension_elements,
         extension_attributes=extension_attributes, text=text)
 }}}
-The above class specified the XML attributes (using {{{_attributes['XML_Attribute_Name']}}} and the class members which store their values (the attributes dictionary gets the value 'member_name'). The constructor for the class needs to accept values for the attribute members as parameters (self.member_name). 
+The above class specified the XML attributes (using {{{_attributes['XML_Attribute_Name']}}} and the class members which store their values (the attributes dictionary gets the value {{{'member_name'}}}). The constructor for the class needs to accept values for the attribute members as parameters (self.member_name). 
 
 Next we'll define classes for {{{location}}} and {{{address}}} which are nested elements. 
 {{{
