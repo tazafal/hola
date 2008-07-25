@@ -1,4 +1,4 @@
-#summary Steps to create a new release package.
+#summary Steps to release a new version of the library.
 #labels Phase-Deploy
 
 = Overview =
