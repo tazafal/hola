@@ -18,3 +18,4 @@ Releasing a new download requires a few steps to be performed. For each release,
   # Generate the download archives
     # run {{{python setup.py sdist --formats=gztar,zip}}} which will create {{{gdata.py-<version.number>.zip}}} and {{{.tar.gz}}} files in the {{{dist}}} directory.
     # upload the archives to the project's downloads page.
+  # Update the [http://pypi.python.org/pypi pypi] (Python Package Index) listing for gdata. 
