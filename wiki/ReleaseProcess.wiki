@@ -16,5 +16,5 @@ Releasing a new download requires a few steps to be performed. For each release,
     # edit the {{{MANIFEST}}} file, which lists all of the files which should be included in the .zip and .tzr.gz archives
     # edit the list of packages in {{{setup.py}}}. This list determines which packages will be compiled and installed on the user's system.
   # Generate the download archives
-    # run {{{python setup.py sdist --formats=gztar,zip}}} which will create {{{gdata.py-}}}version.number{{{.zip}}} and {{{.tar.gz}}} files in the {{{dist}}} directory.
+    # run {{{python setup.py sdist --formats=gztar,zip}}} which will create {{{gdata.py-<version.number>.zip}}} and {{{.tar.gz}}} files in the {{{dist}}} directory.
     # upload the archives to the project's downloads page.
