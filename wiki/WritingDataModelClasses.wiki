@@ -1,4 +1,6 @@
+#summary Short tutorial on how to define classes to parse new Atom feeds and entries.
 #labels Phase-Implementation
+
 Describes how to write a class used to parse the XML and convert it into python objects. 
 
 = Introduction =
