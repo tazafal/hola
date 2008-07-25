@@ -7,7 +7,7 @@ Releasing a new download requires a few steps to be performed. For each release,
 
 = Steps =
 
-  # Write release notes ({{{RELEASE_NOTES.txt}}}) for the new release.
+  # Write release notes for the new release in {{{RELEASE_NOTES.txt}}}.
   # Update the version number in {{{setup.py}}} and in the user agent header in {{{__SetSource}}} in {{{src/gdata/service.py}}}.
   # Regenerate the pydoc documentation pages.
     # if any new files have been added in this release, list them in the pydoc shell script: {{{pydocs/generate_docs}}}
