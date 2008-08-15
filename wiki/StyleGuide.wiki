@@ -57,3 +57,24 @@ Foo(1, b=2)
 1 blank line between methods within a class, between the docstring and code and within a method to break the instructions into logical sections.
 
 2 blank lines between top level definitions. 
+
+For example
+{{{
+import xyz
+
+
+class Foo(object):
+  def __init__(self):
+    pass
+
+  def do_something(self):
+    pass
+
+
+def module_function():
+  return 'ok'
+
+
+if __name__ == '__main__':
+  print 'Running this module as a script.'
+}}}
