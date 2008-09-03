@@ -15,11 +15,11 @@ Additions and modifications to the code in this project should conform to these 
 ||Modules ||{{{lower_with_under}}} ||{{{_lower_with_under}}} ||
 ||Classes || {{{CapWords}}} || {{{_CapWords}}} ||
 ||Exceptions || {{{CapWords}}}  || ||
-||Functions || {{{CapWords()}}} || {{{_CapWords()}}} ||
+||Functions || {{{CapWords()}}}, {{{lower_with_under()}}} || {{{_CapWords()}}}, {{{_lower_with_under()}}} ||
 ||Global/Class Constants || {{{CAPS_WITH_UNDER}}} || {{{_CAPS_WITH_UNDER}}} ||
 ||Global/Class Variables || {{{lower_with_under}}} || {{{_lower_with_under}}} ||
 ||Instance Variables || {{{lower_with_under}}} ||{{{_lower_with_under}}} (protected) or {{{__lower_with_under}}} (private) ||
-||Method Names || {{{CapWords()}}} || {{{_CapWords()}}} (protected) or {{{__CapWords()}}} (private) ||
+||Method Names || {{{CapWords()}}}, {{{lower_with_under()}}} || {{{_CapWords()}}}, {{{_lower_with_under()}}} (protected) or {{{__CapWords()}}}, {{{__lower_with_under()}}} (private) ||
 ||Setter/Getter Method Names || {{{foo()}}}, {{{set_foo()}}}  || ||
 ||Function/Method Parameters || {{{lower_with_under}}}  || ||
 ||Local Variables || {{{lower_with_under}}} || ||
