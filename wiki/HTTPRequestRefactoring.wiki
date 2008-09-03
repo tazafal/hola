@@ -8,6 +8,14 @@ These changes effect atom.service and gdata.service modules.
 
 In both the old and new versions, each HTTP request involved several components. There is a component which is responsible for opening a connection to the server, making the request, and receiving the response. There is also the idea of a authorization token which must be included in some requests as an HTTP {{{Authorization}}} header. 
 
+= High level overview = 
+
+In this new model, each {{{GDataService}}} instance contains:
+  * an {{{http_client}}} object responsible for making HTTP requests.
+  * a {{{token_store}}} which contains all of the auth tokens for the current user
+    * the token store will find the appropriate token based on the requested URL
+    * each token is an object which will perform the HTTP request using the {{{GDataService}}}'s {{{http_client}}}.
+
 = Old vs. New =
 
 == HTTP requests ==
