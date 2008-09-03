@@ -14,14 +14,14 @@ In both the old and new versions, each HTTP request involved several components.
 In the old model, the HTTP requests were handled by a module level function called {{{HttpRequest}}}. The {{{gdata.service}}} module had a top level variable called {{{http_request_handler}}} which pointed to the desired module whose HttpRequest should be used. The default value was the {{{atom.service}}} module. This meant that a call to {{{gdata_service.Get('http://example.com')}}} made the HTTP request by using {{{atom.service.HttpRequest}}}. The call structure looks a bit like this:
 
 If you wanted to change how the HTTP requests were made in this old model, you could do one of two things:
-# Set {{{gdata.service.http_request_handler}}} to a different module before instantiating any {{{GDataService}}} objects. 
-# Set the {{{handler}}} member of a {{{GDataService}}} object to a different module. 
+  # Set {{{gdata.service.http_request_handler}}} to a different module before instantiating any {{{GDataService}}} objects. 
+  # Set the {{{handler}}} member of a {{{GDataService}}} object to a different module. 
 
 In the new model, the HTTP requests are done using an instance of an {{{GenericHttpClient}}} class. (This class is defined in {{{atom.http_interface}}}.) Each instance of {{{GDataService}}} has an {{{http_client}}} member. This member has a {{{request}}} method which performs an HTTP request. When an instance of {{{GDataService}}} is created, the {{{http_client}}} defaults to a new instance of {{{atom.http.HttpClient}}}. 
 
 Under this new model, if you want to change how the HTTP requests were made you could do one of two things:
-# Create an instance of a class which makes HTTP requests using a {{{request}}} method, and pass it in as the {{{http_client}}} argument when constructing a {{{GDataService}}} object.
-# Create an instance of a class which makes HTTP requests using a {{{request}}} method and set the {{{http_client}}} member of an existing instance of {{{GDataService}}}.
+  # Create an instance of a class which makes HTTP requests using a {{{request}}} method, and pass it in as the {{{http_client}}} argument when constructing a {{{GDataService}}} object.
+  # Create an instance of a class which makes HTTP requests using a {{{request}}} method and set the {{{http_client}}} member of an existing instance of {{{GDataService}}}.
 
 
 == Token Management ==
