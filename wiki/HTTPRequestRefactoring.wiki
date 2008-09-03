@@ -46,7 +46,7 @@ One of the reasons that I created the {{{token_store}}} was to allow the {{{GDat
 == Pseudocode ==
 
 Here is some pseudocode which provides a descriptions of how the logic has changed. (Sometimes code is easier to read in these situations.) In both examples, a {{{GDataService}}} object is performing an HTTP GET request.
-=== Old Get method ===
+=== Old 'Get' method ===
 {{{
 # Set the Authorization header
 # auth_token is a string
@@ -54,7 +54,7 @@ headers['Authorization'] = self.auth_token
 # Make the HTTP request, the handler defaults to the atom.service module
 self.handler.HttpRequest(self, 'GET', data=None, uri, headers)
 }}}
-=== New Get method ===
+=== New 'Get' method ===
 {{{
 # Find a token to set the Authorization header as the request is being made
 token = self.token_store.find_token(url)
