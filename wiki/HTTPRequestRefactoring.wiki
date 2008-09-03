@@ -1,0 +1,10 @@
+#summary Explaining the new logic flow for HTTP requests to be released in version 1.2.0
+
+= Introduction =
+
+These changes effect atom.service and gdata.service modules.
+
+
+= Details =
+
+I'll explain by way of example, lets say that you want to post a new blog post to Blogger.
