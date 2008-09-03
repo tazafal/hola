@@ -42,3 +42,23 @@ token.perform_request(http_client, operation, url, data, headers):
 }}}
 
 One of the reasons that I created the {{{token_store}}} was to allow the {{{GDataService}}} to store and load a collection of tokens which could be reused over multiple sessions. I plan to write a subclass of the TokenStore which will run on Google App Engine and store all of the tokens for a specific user. These stored tokens would be loaded based on the stored token and an appropriate token would be found in the store. Only when a suitable token could not be found would a user have to go through the AuthSub redirect process to obtain a new token.
+
+== Pseudocode ==
+
+Here is some pseudocode which provides a descriptions of how the logic has changed. (Sometimes code is easier to read in these situations.) In both examples, a {{{GDataService}}} object is performing an HTTP GET request.
+=== Old Get method ===
+{{{
+# Set the Authorization header
+# auth_token is a string
+headers['Authorization'] = self.auth_token
+# Make the HTTP request, the handler defaults to the atom.service module
+self.handler.HttpRequest(self, 'GET', data=None, uri, headers)
+}}}
+=== New Get method ===
+{{{
+# Find a token to set the Authorization header as the request is being made
+token = self.token_store.find_token(url)
+# Tell the token to perform the request using the http_client object
+# By default, the http_client is an instance of atom.http.HttpClient which uses httplib to make requests
+token.perform_request(self.http_client, 'GET', url, data=None, headers)
+}}} 
