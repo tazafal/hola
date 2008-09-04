@@ -20,7 +20,7 @@ In this new model, each {{{GDataService}}} instance contains:
 = Old vs. New =
 
 == HTTP requests ==
-In the old model, the HTTP requests were handled by a module level function called {{{HttpRequest}}}. The {{{gdata.service}}} module had a top level variable called {{{http_request_handler}}} which pointed to the desired module whose HttpRequest should be used. The default value was the {{{atom.service}}} module. This meant that a call to {{{gdata_service.Get('http://example.com')}}} made the HTTP request by using {{{atom.service.HttpRequest}}}. The call structure looks a bit like this:
+In the old model, the HTTP requests were handled by a module level function called {{{HttpRequest}}}. The {{{gdata.service}}} module had a top level variable called {{{http_request_handler}}} which pointed to the desired module whose HttpRequest should be used. The default value was the {{{atom.service}}} module. This meant that a call to {{{gdata_service.Get('http://example.com')}}} made the HTTP request by using {{{atom.service.HttpRequest}}}. 
 
 If you wanted to change how the HTTP requests were made in this old model, you could do one of two things:
   # Set {{{gdata.service.http_request_handler}}} to a different module before instantiating any {{{GDataService}}} objects. 
