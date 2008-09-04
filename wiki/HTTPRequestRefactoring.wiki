@@ -50,7 +50,7 @@ token.perform_request(http_client, operation, url, data, headers):
     return http_client.request(operation, url, data, headers)
 }}}
 
-One of the reasons that I created the {{{token_store}}} was to allow the {{{GDataService}}} to store and load a collection of tokens which could be reused over multiple sessions. I plan to write a subclass of the TokenStore which will run on Google App Engine and store all of the tokens for a specific user. These stored tokens would be loaded based on the stored token and an appropriate token would be found in the store. Only when a suitable token could not be found would a user have to go through the AuthSub redirect process to obtain a new token.
+One of the reasons that I created the {{{token_store}}} was to allow the {{{GDataService}}} to store and load a collection of tokens which could be reused over multiple sessions. I plan to write a subclass of the TokenStore which will run on Google App Engine and store all of the tokens for a specific user. These stored tokens would be loaded based on the current user and an appropriate token would be found in the store. Only when a suitable token could not be found would a user have to go through the AuthSub redirect process to obtain a new token.
 
 == Pseudocode ==
 
