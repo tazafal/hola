@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Designing a token_store for App Engine apps.
 #labels Phase-Design
 
 = Introduction =
