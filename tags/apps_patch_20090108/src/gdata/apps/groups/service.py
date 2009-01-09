@@ -291,24 +291,8 @@ class GroupsService(gdata.apps.service.PropertyService):
     Returns:
       A dict containing the result of the retrieve operation.
     """
-    return self.RetrievePageOfOwners(group_id, '')
-
-  def RetrievePageOfOwners(self, group_id, start_key):
-    """Retrieve owners of a group starting from the start_key.
-
-    Args:
-      group_id: The ID of the group (e.g. us-sales).
-      start_key: The starting hashed string of groups that should be returned.
-
-    Returns:
-      A dict containing the result of the retrieve operation.
-    """
     uri = self._ServiceUrl('owner', True, group_id, '', '', '', '')
-    properties_list = []
-    property_feed = self._GetPropertyFeed(uri)
-    for property_entry in self._GetPropertyFeed(uri).entry:
-      properties_list.append(self._PropertyEntry2Dict(property_entry))
-    return [property_feed , properties_list]
+    return self._GetPropertiesList(uri)
 
   def RemoveOwnerFromGroup(self, owner_email, group_id):
     """Remove the given owner from the given group
