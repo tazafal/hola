@@ -1107,6 +1107,16 @@ class GDataService(atom.service.AtomService):
     else:
       return None
 
+  def AddAllElementsFromAllPages(self, link_finder, func):
+    """retrieve all pages and add all elements"""
+    next = link_finder.GetNextLink()
+    while next is not None:
+      next_feed = func(str(self.Get(next.href)))
+      for a_entry in next_feed.entry:
+        link_finder.entry.append(a_entry)
+      next = next_feed.GetNextLink()
+    return link_finder
+    
   def Post(self, data, uri, extra_headers=None, url_params=None,
            escape_params=True, redirects_remaining=4, media_source=None,
            converter=None):

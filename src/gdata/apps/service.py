@@ -396,7 +396,6 @@ class AppsService(gdata.service.GDataService):
     return self.AddAllElementsFromAllPages(
       ret, gdata.apps.UserFeedFromString)
 
-
 class PropertyService(gdata.service.GDataService):
   """Client for the Google Apps Property service."""
 
@@ -425,6 +424,22 @@ class PropertyService(gdata.service.GDataService):
       properties[property.name] = property.value
     return properties
 
+  def _GetPropertyFeed(self, uri):
+    try:
+      return gdata.apps.PropertyFeedFromString(str(self.Get(uri)))
+    except gdata.service.RequestError, e:
+      raise gdata.apps.service.AppsForYourDomainException(e.args[0])
+
+  def _GetPropertiesList(self, uri):
+    property_feed = self._GetPropertyFeed(uri)
+    # pagination
+    property_feed = self.AddAllElementsFromAllPages(
+      property_feed, gdata.apps.PropertyFeedFromString)
+    properties_list = []
+    for property_entry in property_feed.entry:
+      properties_list.append(self._PropertyEntry2Dict(property_entry))
+    return properties_list
+
   def _GetProperties(self, uri):
     try:
       return self._PropertyEntry2Dict(gdata.apps.PropertyEntryFromString(
@@ -445,5 +460,11 @@ class PropertyService(gdata.service.GDataService):
     try:
       return self._PropertyEntry2Dict(gdata.apps.PropertyEntryFromString(
         str(self.Put(property_entry, uri))))
+    except gdata.service.RequestError, e:
+      raise gdata.apps.service.AppsForYourDomainException(e.args[0])
+
+  def _DeleteProperties(self, uri):
+    try:
+      self.Delete(uri)
     except gdata.service.RequestError, e:
       raise gdata.apps.service.AppsForYourDomainException(e.args[0])
