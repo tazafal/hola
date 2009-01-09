@@ -161,7 +161,7 @@ class GroupsService(gdata.apps.service.PropertyService):
       A dict containing the result of the retrieve operation.
     """
     uri = self._ServiceUrl('group', True, '', member_id, '', '', direct_only)
-    return self._GetProperties(uri)
+    return self._GetPropertiesList(uri)
 
   def DeleteGroup(self, group_id):
     """Delete a group based on its ID.
