@@ -3,8 +3,6 @@
 
  
 ===Google Data Core===
-  * Secure AuthSub mode support
-  * OAuth support
   * Use unicode encoding by default
 
 ===Service Specific Library===
