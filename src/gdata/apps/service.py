@@ -113,16 +113,6 @@ class AppsService(gdata.service.GDataService):
       yield next_feed
       next = next_feed.GetNextLink()
 
-  def AddAllElementsFromAllPages(self, link_finder, func):
-    """retrieve all pages and add all elements"""
-    next = link_finder.GetNextLink()
-    while next is not None:
-      next_feed = func(str(self.Get(next.href)))
-      for a_entry in next_feed.entry:
-        link_finder.entry.append(a_entry)
-      next = next_feed.GetNextLink()
-    return link_finder
-
   def RetrievePageOfEmailLists(self, start_email_list_name=None):
     """Retrieve one page of email list"""
 
