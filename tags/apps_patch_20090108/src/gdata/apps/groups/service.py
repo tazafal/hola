@@ -46,15 +46,16 @@ class GroupsService(gdata.apps.service.PropertyService):
   """Client for the Google Apps Groups service."""
 
   def _ServiceUrl(self, service_type, is_existed, group_id, member_id, owner_email,
-                  start_key, direct_only, domain=None):
+                  start_key, direct_only=None, domain=None):
     if domain is None:
       domain = self.domain
     if service_type == 'group':
       if group_id != '' and is_existed:
         return GROUP_ID_URL % (domain, group_id)
       if member_id != '':
-        if direct_only:
-          return GROUP_MEMBER_DIRECT_URL % (domain, member_id, self._Bool2Str(direct_only))
+        if direct_only is not None:
+          return GROUP_MEMBER_DIRECT_URL % (domain, member_id, 
+                                            self._Bool2Str(direct_only))   
         else:
           return GROUP_MEMBER_URL % (domain, member_id)
       if start_key != '':
@@ -150,7 +151,7 @@ class GroupsService(gdata.apps.service.PropertyService):
     uri = self._ServiceUrl('group', True, '', '', '', '', '')
     return self._GetPropertiesList(uri)
 
-  def RetrieveGroups(self, member_id, direct_only):
+  def RetrieveGroups(self, member_id, direct_only=True):
     """Retrieve all groups that belong to the given member_id.
 
     Args:
