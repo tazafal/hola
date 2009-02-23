@@ -63,7 +63,7 @@ class HttpRequest(object):
     if method is not None:
       self.method = method
     if isinstance(uri, (str, unicode)):
-      uri = parse_uri(uri)
+      uri = Uri.parse_uri(uri)
     self.uri = uri or Uri()
 
 
@@ -253,38 +253,44 @@ class Uri(object):
 
   ModifyRequest = modify_request
 
+  def parse_uri(uri_string):
+    """Creates a Uri object which corresponds to the URI string.
  
-def parse_uri(uri_string):
-  """Creates a Uri object which corresponds to the URI string.
- 
-  This method can accept partial URIs, but it will leave missing
-  members of the Uri unset.
-  """
-  parts = urlparse.urlparse(uri_string)
-  uri = Uri()
-  if parts[0]:
-    uri.scheme = parts[0]
-  if parts[1]:
-    host_parts = parts[1].split(':')
-    if host_parts[0]:
-      uri.host = host_parts[0]
-    if len(host_parts) > 1:
-      uri.port = int(host_parts[1])
-  if parts[2]:
-    uri.path = parts[2]
-  if parts[4]:
-    param_pairs = parts[4].split('&')
-    for pair in param_pairs:
-      pair_parts = pair.split('=')
-      if len(pair_parts) > 1:
-        uri.query[urllib.unquote_plus(pair_parts[0])] = (
-            urllib.unquote_plus(pair_parts[1]))
-      elif len(pair_parts) == 1:
-        uri.query[urllib.unquote_plus(pair_parts[0])] = None
-  return uri
+    This method can accept partial URIs, but it will leave missing
+    members of the Uri unset.
+    """
+    parts = urlparse.urlparse(uri_string)
+    uri = Uri()
+    if parts[0]:
+      uri.scheme = parts[0]
+    if parts[1]:
+      host_parts = parts[1].split(':')
+      if host_parts[0]:
+        uri.host = host_parts[0]
+      if len(host_parts) > 1:
+        uri.port = int(host_parts[1])
+    if parts[2]:
+      uri.path = parts[2]
+    if parts[4]:
+      param_pairs = parts[4].split('&')
+      for pair in param_pairs:
+        pair_parts = pair.split('=')
+        if len(pair_parts) > 1:
+          uri.query[urllib.unquote_plus(pair_parts[0])] = (
+              urllib.unquote_plus(pair_parts[1]))
+        elif len(pair_parts) == 1:
+          uri.query[urllib.unquote_plus(pair_parts[0])] = None
+    return uri
+
+  parse_uri = staticmethod(parse_uri)
+
+  ParseUri = parse_uri
 
 
-ParseUri = parse_uri
+parse_uri = Uri.parse_uri
+
+
+ParseUri = Uri.parse_uri
 
 
 class HttpResponse(object):
@@ -342,7 +348,7 @@ class HttpClient(object):
                   will be sent in order as the body of the HTTP request.
     """
     if isinstance(uri, (str, unicode)):
-      uri = parse_uri(uri)
+      uri = Uri.parse_uri(uri)
     if uri.scheme == 'https':
       if not uri.port:
         connection = httplib.HTTPSConnection(uri.host)
