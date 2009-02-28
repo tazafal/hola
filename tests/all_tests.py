@@ -28,6 +28,7 @@ import atom_tests.auth_test
 import atom_tests.mock_http_core_test
 import atom_tests.client_test
 import gdata_tests.client_test
+import test_config
 
 
 def suite():
