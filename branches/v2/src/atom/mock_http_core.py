@@ -39,15 +39,7 @@ class MockHttpClient(object):
 
   def add_response(self, http_request, status, reason, headers=None, 
       body=None):
-    if body is not None:
-      if hasattr(body, 'read'):
-        copied_body = body.read()
-      else:
-        copied_body = body
-    else:
-      copied_body = None
-    response = atom.http_core.HttpResponse(status, reason, headers, 
-                                           copied_body)
+    response = MockHttpResponse(status, reason, headers, body)
     # TODO Scrub the request and the response.
     self._recordings.append((http_request._copy(), response))
 
@@ -65,7 +57,9 @@ class MockHttpClient(object):
     _scrub_request(request)
     if self.real_client is None:
       for recording in self._recordings:
+        #print 'Examining recording: ', recording[1].read()
         if _match_request(recording[0], request):
+          #print 'Returning the above!'
           return recording[1]
     else:
       response = self.real_client.request(http_request)
@@ -206,3 +200,23 @@ class SettableHttpClient(object):
 
   def request(self, http_request):
     return self.response
+
+
+class MockHttpResponse(atom.http_core.HttpResponse):
+
+  def __init__(self, status=None, reason=None, headers=None, body=None):
+    self._headers = headers or {}
+    if status is not None:
+      self.status = status
+    if reason is not None:
+      self.reason = reason
+    if body is not None:
+      # Instead of using a file-like object for the body, store as a string
+      # so that reads can be repeated.
+      if hasattr(body, 'read'):
+        self._body = body.read()
+      else:
+        self._body = body
+
+  def read(self):
+    return self._body
