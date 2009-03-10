@@ -25,4 +25,3 @@ settings assignment below to use your own test configuration.
 """
 
 settings = gdata.test_config_template
-

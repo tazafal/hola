@@ -36,32 +36,32 @@ class BloggerTest(unittest.TestCase):
 
   def setUp(self):
     self.skip_tests = settings.RUN_LIVE_TESTS == False
-    # Getting the auth token only needs to be done once in the course of test
-    # runs, so this belongs in __init__ instead of setUp.
-    if (not self.skip_tests 
-        and settings.BLOGGER_CONFIG['auth_token'] is None):
-      login_client = gdata.client.GDClient()
-      # Obtain a client login token and use for all tests.
-      settings.BLOGGER_CONFIG[
-          'auth_token'] = login_client.request_client_login_token(
-              settings.blogger_email(), 
-              settings.blogger_password(), 'blogger',
-              'BloggerTest client')
     if not self.skip_tests:
       self.client = gdata.client.GDClient()
-      self.client.auth_token = settings.BLOGGER_CONFIG['auth_token']
       # Use a mock HTTP client which will record and replay the HTTP traffic
       # from these tests.
       self.client.http_client = atom.mock_http_core.MockHttpClient()
+      # Getting the auth token only needs to be done once in the course of test
+      # runs, so this belongs in __init__ instead of setUp.
+      if settings.BLOGGER_CONFIG['auth_token'] is None:
+        self.client.http_client.use_cached_session(
+            'gdata_live_test.BloggerTest.client_login')
+        print 'getting an auth token!!!!!'
+        settings.BLOGGER_CONFIG[
+            'auth_token'] = self.client.request_client_login_token(
+                settings.blogger_email(),
+                settings.blogger_password(), 'blogger',
+                'BloggerTest client')
+        self.client.http_client.close_session()
+      self.client.auth_token = settings.BLOGGER_CONFIG['auth_token']
 
   def test_create_update_delete(self):
     if self.skip_tests:
       return
 
     # Either load the recording or prepare to make a live request.
-    self.client.http_client._load_or_use_client(
-        'live_client_test.BloggerTest.test_create_update_delete', 
-        atom.http_core.HttpClient())
+    self.client.http_client.use_cached_session(
+        'gdata_live_test.BloggerTest.test_create_update_delete')
 
     blog_post = atom.Entry(
         title=atom.Title(text=settings.BLOGGER_CONFIG['title']),
@@ -73,23 +73,47 @@ class BloggerTest(unittest.TestCase):
         'http://www.blogger.com/feeds/%s/posts/default' % (
             settings.BLOGGER_CONFIG['blog_id']),
          converter=atom.EntryFromString, http_request=http_request)
-
     self.assertEqual(entry.title.text, settings.BLOGGER_CONFIG['title'])
     self.assertEqual(entry.content.text, settings.BLOGGER_CONFIG['content'])
 
-    # Delete the test entry from the blog.
+    # Edit the test entry.
     edit_link = None
     for link in entry.link:
+      # Find the edit link for this entry. 
+      if link.rel == 'edit':
+        edit_link = link.href
+    entry.title.text = 'Edited'
+    http_request = atom.http_core.HttpRequest()
+    http_request.add_body_part(str(entry), 'application/atom+xml')
+    edited_entry = self.client.request('PUT', edit_link,
+         converter=atom.EntryFromString, http_request=http_request)
+    self.assertEqual(edited_entry.title.text, 'Edited')
+    self.assertEqual(edited_entry.content.text, entry.content.text)
+
+    # Delete the test entry from the blog.
+    edit_link = None
+    for link in edited_entry.link:
       if link.rel == 'edit':
         edit_link = link.href
     response = self.client.request('DELETE', edit_link)
     self.assertEqual(response.status, 200)
 
     # If this was a live request, save the recording.
-    if self.client.http_client.real_client is not None:
-      self.client.http_client._save_recordings(
-          'live_client_test.BloggerTest.test_create_update_delete')
+    self.client.http_client.close_session()
 
+  def test_use_version_two(self):
+    if self.skip_tests:
+      return
+    self.client.http_client.use_cached_session(
+        'gdata_live_test.BloggerTest.test_use_version_two')
+        atom.http_core.HttpClient())
+
+    # Use version 2 of the Blogger API. 
+    self.client.api_version = '2'
+    # TODO: perform crud operations using version 2 of the API.
+
+    self.client.http_client.close_session()
+    
 
 def suite():
   return unittest.TestSuite((unittest.makeSuite(BloggerTest, 'test'),))
