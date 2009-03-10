@@ -46,7 +46,6 @@ class BloggerTest(unittest.TestCase):
       if settings.BLOGGER_CONFIG['auth_token'] is None:
         self.client.http_client.use_cached_session(
             'gdata_live_test.BloggerTest.client_login')
-        print 'getting an auth token!!!!!'
         settings.BLOGGER_CONFIG[
             'auth_token'] = self.client.request_client_login_token(
                 settings.blogger_email(),
@@ -106,7 +105,6 @@ class BloggerTest(unittest.TestCase):
       return
     self.client.http_client.use_cached_session(
         'gdata_live_test.BloggerTest.test_use_version_two')
-        atom.http_core.HttpClient())
 
     # Use version 2 of the Blogger API. 
     self.client.api_version = '2'

@@ -157,7 +157,8 @@ def _scrub_request(http_request):
   recordings. At the moment only requests sent to a ClientLogin url are
   scrubbed.
   """
-  if http_request.uri.path.endswith('ClientLogin'):
+  if (http_request and http_request.uri and http_request.uri.path and 
+      http_request.uri.path.endswith('ClientLogin')):
     # Remove the email and password from a ClientLogin request.
     http_request._body_parts = []
     http_request.add_form_inputs(
