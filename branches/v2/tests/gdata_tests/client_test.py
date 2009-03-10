@@ -124,6 +124,17 @@ class RequestTest(unittest.TestCase):
     self.assertEqual(response.getheader('Echo-Scheme'), 'http')
     self.assertEqual(response.read(), 'test')
 
+  def test_gdata_version_header(self):
+    client = gdata.client.GDClient()
+    client.http_client = atom.mock_http_core.EchoHttpClient()
+
+    response = client.request('GET', 'http://example.com')
+    self.assertEqual(response.getheader('GData-Version'), None)
+
+    client.api_version = '2'
+    response = client.request('GET', 'http://example.com')
+    self.assertEqual(response.getheader('GData-Version'), '2')
+
   def test_redirects(self):
     client = gdata.client.GDClient()
     client.http_client = atom.mock_http_core.MockHttpClient()

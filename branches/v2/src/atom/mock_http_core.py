@@ -57,9 +57,7 @@ class MockHttpClient(object):
     _scrub_request(request)
     if self.real_client is None:
       for recording in self._recordings:
-        #print 'Examining recording: ', recording[1].read()
         if _match_request(recording[0], request):
-          #print 'Returning the above!'
           return recording[1]
     else:
       response = self.real_client.request(http_request)
@@ -83,14 +81,42 @@ class MockHttpClient(object):
     self._recordings = pickle.load(recording_file)
 
   def _delete_recordings(self, filename):
-    # TODO: add tests for this method.
-    os.remove(os.path.join(tempfile.gettempdir(), filename))
+    full_path = os.path.join(tempfile.gettempdir(), filename)
+    if os.path.exists(full_path):
+      os.remove(full_path)
 
   def _load_or_use_client(self, filename, http_client):
     if os.path.exists(os.path.join(tempfile.gettempdir(), filename)):
       self._load_recordings(filename)
     else:
       self.real_client = http_client
+
+  def use_cached_session(self, name, real_http_client=None):
+    """Attempts to load recordings from a previous live request.
+    
+    If a temp file with the recordings exists, then it is used to fulfill
+    requests. If the file does not exist, then a real client is used to 
+    actually make the desired HTTP requests. Requests and responses are
+    recorded and will be written to the desired temprary cache file when
+    close_session is called.
+
+    Args:
+      name: str The name of the temporary file which should hold the cached
+            HTTP requests and responses.
+      real_http_client: atom.http_core.HttpClient the real client to be used
+                        if the cached recordings are not found. If the default
+                        value is used, this will be an 
+                        atom.http_core.HttpClient.
+    """
+    if real_http_client is None:
+      real_http_client = atom.http_core.HttpClient()
+    self._recordings_cache_name = name
+    self._load_or_use_client(name, real_http_client)
+
+  def close_session(self):
+    """Saves recordings in the temporary file named in use_cached_session."""
+    if self.real_client is not None:
+      self._save_recordings(self._recordings_cache_name)
 
 
 def _match_request(http_request, stored_request):
@@ -124,15 +150,23 @@ def _match_request(http_request, stored_request):
 
 
 def _scrub_request(http_request):
-  # TODO: Remove authorization token from the request.
-  # TODO: Remove an email address and password from a client login request. 
-  pass
+  """ Removes email address and password from a client login request.
+  
+  Since the mock server saves the request and response in plantext, sensitive
+  information like the password should be removed before saving the 
+  recordings. At the moment only requests sent to a ClientLogin url are
+  scrubbed.
+  """
+  if http_request.uri.path.endswith('ClientLogin'):
+    # Remove the email and password from a ClientLogin request.
+    http_request._body_parts = []
+    http_request.add_form_inputs(
+        {'form_data': 'client login request has been scrubbed'})
+  return http_request
 
 
 def _scrub_response(http_response):
-  # TODO: Remove authorization token from the response.
-  # TODO: Might want to remove email addresses as well.
-  pass
+  return http_response
 
     
 class EchoHttpClient(object):
