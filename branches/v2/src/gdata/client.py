@@ -23,6 +23,7 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 import re
 import atom.client
+import atom.core
 import gdata.service
 import atom.http_core
 import gdata.gauth
@@ -238,6 +239,62 @@ class GDClient(atom.client.AtomPubClient):
     return http_request
 
   ModifyRequest = modify_request
+
+
+def v2_entry_from_response(response):
+  """Experimental converter which gets an Atom entry from the response."""
+  return gdata.data.entry_from_string(response.read, version=2)
+
+
+def v2_feed_from_response(response):
+  """Experimental converter which gets an Atom feed from the response."""
+  return gdata.data.feed_from_string(response.read, version=2)
+
+
+def create_converter(obj):
+  """Experimental: Generates a converter function for this object's class.
+  """
+  return lambda response: atom.core.xml_element_from_string(response.read(), obj.__class__, version=2, encoding='UTF-8')
+
+
+class VersionTwoClient(GDClient):
+  """Experimental client class for use with version two Google Data APIs"""
+
+  def get_feed(uri, auth_token=None, converter=v2_feed_from_response, 
+               **kwargs):
+    return self.request(method='GET', uri=uri, auth_token=auth_token,
+                        converter=converter, **kwargs)
+
+  def get_entry(url, auth_token=None, converter=v2_entry_from_response,
+                **kwargs):
+    return self.request(method='GET', uri=uri, auth_token=auth_token,
+                        converter=converter, **kwargs)
+
+  def post(entry, uri, auth_token=None, converter=None, **kwargs):
+    if converter is None:
+      converter = create_converter(entry)
+    http_request = atom.http_core.HttpRequest()
+    http_request.add_body_part(entry.to_string(), 'application/atom+xml')
+    return self.request(method='POST', uri=uri, auth_token=auth_token,
+                        http_request=http_request, converter=converter, 
+                        **kwargs)
+
+  def update(entry, auth_token=None, **kwargs):
+    http_request = atom.http_core.HttpRequest()
+    http_request.add_body_part(entry.to_string(), 'application/atom+xml')
+    return self.request(method='PUT', uri=entry.get_edit_url(), 
+                        auth_token=auth_token, http_request=http_request, 
+                        converter=create_converter(entry), 
+                        **kwargs)
+
+  def delete(entry, auth_token=None, **kwargs):
+    return self.request(method='DELETE', uri=entry.get_edit_url(), 
+                        auth_token=auth_token, **kwargs)
+
+  def batch(feed):
+    #TODO: implement batch requests.
+    pass
+
 
 # Version 1 code.
 SCOPE_URL_PARAM_NAME = gdata.service.SCOPE_URL_PARAM_NAME 
