@@ -15,7 +15,6 @@
 # limitations under the License.
 
 import gdata.test_config_template
-import gdata.jeffs_test_config
 
 """Loads configuration for tests which connect to Google servers.
 
@@ -26,4 +25,3 @@ settings assignment below to use your own test configuration.
 """
 
 settings = gdata.test_config_template
-gdata.jeffs_test_config.fill_in_template()
