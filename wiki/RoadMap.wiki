@@ -6,7 +6,6 @@
   * Use unicode encoding by default
 
 ===Service Specific Library===
-  * Health Module
   * Notebook Module
 
   
