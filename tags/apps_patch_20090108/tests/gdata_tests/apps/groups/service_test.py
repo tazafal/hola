@@ -91,11 +91,13 @@ class GroupsTest(unittest.TestCase):
     for user in self.created_users:
       try:
         self.apps_client.DeleteUser(user.login.user_name)
+        print 'User ' + user.login.user_name + ' deleted'
       except Exception, e:
         print e
     for group in self.created_groups:
       try:
         self.groups_client.DeleteGroup(group)
+        print 'Group ' + group + ' deleted'
       except Exception, e:
         print e
 
@@ -166,7 +168,7 @@ class GroupsTest(unittest.TestCase):
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.assertEquals(len(retrieved_direct_groups), 1)
-    self.assertEquals(len(retrieved_groups), 1)
+    self.assertEquals(len(retrieved_groups), 2)
 
     # tests IsMember method
     try:
