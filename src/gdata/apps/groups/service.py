@@ -151,7 +151,7 @@ class GroupsService(gdata.apps.service.PropertyService):
     uri = self._ServiceUrl('group', True, '', '', '', '', '')
     return self._GetPropertiesList(uri)
 
-  def RetrieveGroups(self, member_id, direct_only=True):
+  def RetrieveGroups(self, member_id, direct_only=False):
     """Retrieve all groups that belong to the given member_id.
 
     Args:
