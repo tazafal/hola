@@ -36,16 +36,19 @@ class FeedEntryParent(atom.core.XmlElement):
   etag = '{http://schemas.google.com/g/2005}etag'
   link = [Link]
 
+  def find_url(self, rel):
+    for link in self.link:
+      if link.rel == rel and link.href:
+        return link.href
+    return None
+
 
 # TODO: once atom Entry exists, inherit from that.
 class GEntry(FeedEntryParent):
   _qname = '{http://www.w3.org/2005/Atom}entry'
 
   def get_edit_url(self):
-    for link in self.link:
-      if link.rel and link.rel == 'edit' and link.href:
-        return link.href
-    return None
+    return self.find_url('edit')
 
   GetEditUrl = get_edit_url
 
@@ -62,6 +65,11 @@ EntryFromString = entry_from_string
 class GFeed(FeedEntryParent):
   _qname = '{http://www.w3.org/2005/Atom}feed'
   entry = [GEntry]
+
+  def get_next_url(self):
+    return self.find_url('next')
+
+  GetNextUrl = get_next_url
 
 
 def feed_from_string(xml_string, version=1, encoding='UTF-8'):

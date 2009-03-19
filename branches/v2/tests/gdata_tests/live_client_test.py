@@ -28,6 +28,7 @@ import gdata.client
 import atom.http_core
 import atom.mock_http_core
 import atom.core
+import gdata.data
 # TODO: switch to using v2 atom data once it is available.
 import atom
 from gdata.test_config import settings
@@ -262,6 +263,47 @@ class ContactsTest(MockHttpTest):
     self.client.request('DELETE', edit_link, http_request=http_request)
 
 
+class VersionTwoClientContactsTest(MockHttpTest):
+
+  def setUp(self):
+    self.skip_tests = settings.RUN_LIVE_TESTS == False
+    if not self.skip_tests:
+      self.client = gdata.client.VersionTwoClient()
+      self.configure_client(settings.ContactsConfig,
+                            'VersionTwoClientContactsTest')
+
+  def test_version_two_client(self):
+
+    if self.skip_tests:
+      return
+    self.configure_cache('test_version_two_client')
+
+    entry = gdata.data.GEntry()
+    entry._other_elements.append(
+        create_element('title', ATOM, 'Test', {'type': 'text'}))
+    entry._other_elements.append(
+        create_element('email', GD, 
+            attributes={'address': 'test@example.com', 'rel': WORK_REL}))
+
+    # Create the test contact.
+    posted = self.client.post(entry,
+        'http://www.google.com/m8/feeds/contacts/default/full')
+    self.assertTrue(isinstance(posted, gdata.data.GEntry))
+    self.assertEqual(posted.get_elements('title')[0].text, 'Test')
+    self.assertEqual(posted.get_elements('email')[0].get_attributes(
+        'address')[0].value, 'test@example.com')
+
+    posted.get_elements('title')[0].text = 'Doug'
+    edited = self.client.update(posted)
+    self.assertTrue(isinstance(edited, gdata.data.GEntry))
+    self.assertEqual(edited.get_elements('title')[0].text, 'Doug')
+    self.assertEqual(edited.get_elements('email')[0].get_attributes(
+        'address')[0].value, 'test@example.com')
+
+    # Delete the test contact.
+    self.client.delete(edited)
+
+
 # Utility methods.
 # The Atom XML namespace.
 ATOM = 'http://www.w3.org/2005/Atom'
@@ -282,12 +324,13 @@ def create_element(tag, namespace=ATOM, text=None, attributes=None):
 
 
 def element_from_string(text):
-  #print text
   return atom.core.xml_element_from_string(text, atom.core.XmlElement)
 
 
 def suite():
-  return unittest.TestSuite((unittest.makeSuite(BloggerTest, 'test'),))
+  return unittest.TestSuite((unittest.makeSuite(BloggerTest, 'test'),
+                             unittest.makeSuite(ContactsTest, 'test'),
+                             unittest.makeSuite(VersionTwoClientContactsTest, 'test')))
 
 
 if __name__ == '__main__':
