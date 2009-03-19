@@ -130,7 +130,8 @@ class GDClient(atom.client.AtomPubClient):
     # On success, convert the response body using the desired converter 
     # function if present.
     if response is None:
-      raise gdata.service.RequestError('Response was None')
+      #raise gdata.service.RequestError('Response was None')
+      return None
     if response.status == 200 or response.status == 201:
       if converter is not None:
         return converter(response.read())
@@ -243,34 +244,55 @@ class GDClient(atom.client.AtomPubClient):
 
 def v2_entry_from_response(response):
   """Experimental converter which gets an Atom entry from the response."""
-  return gdata.data.entry_from_string(response.read, version=2)
+  return gdata.data.entry_from_string(response.read(), version=2)
 
 
 def v2_feed_from_response(response):
   """Experimental converter which gets an Atom feed from the response."""
-  return gdata.data.feed_from_string(response.read, version=2)
+  return gdata.data.feed_from_string(response.read(), version=2)
 
 
 def create_converter(obj):
   """Experimental: Generates a converter function for this object's class.
   """
-  return lambda response: atom.core.xml_element_from_string(response.read(), obj.__class__, version=2, encoding='UTF-8')
+  return lambda response_body: atom.core.xml_element_from_string(
+      response_body, obj.__class__, version=2, encoding='UTF-8')
 
 
 class VersionTwoClient(GDClient):
   """Experimental client class for use with version two Google Data APIs"""
 
-  def get_feed(uri, auth_token=None, converter=v2_feed_from_response, 
+  def get_feed(self, uri, auth_token=None, converter=v2_feed_from_response,
                **kwargs):
     return self.request(method='GET', uri=uri, auth_token=auth_token,
                         converter=converter, **kwargs)
 
-  def get_entry(url, auth_token=None, converter=v2_entry_from_response,
+  def get_entry(self, url, auth_token=None, converter=v2_entry_from_response,
                 **kwargs):
     return self.request(method='GET', uri=uri, auth_token=auth_token,
                         converter=converter, **kwargs)
 
-  def post(entry, uri, auth_token=None, converter=None, **kwargs):
+  def get_next(self, feed, auth_token=None, converter=None, **kwargs):
+    """Fetches the next set of results from the feed. 
+    
+    When requesting a feed, the number of entries returned is capped at a
+    service specific default limit (often 25 entries). You can specify your
+    own entry-count cap using the max-results URL query parameter. If there
+    are more results than could fit under max-results, the feed will contain
+    a next link. This method performs a GET against this next results URL.
+
+    Returns:
+      A new feed object containing the next set of entries in this feed.
+    """
+    if converter is None:
+      converter = create_converter(feed)
+    return self.get_feed(feed.get_next_url(), auth_token=auth_token,
+                         converter=converter, **kwargs)
+
+  # TODO: add a refresh method to re-fetch the entry/feed from the server
+  # if it has been updated.
+
+  def post(self, entry, uri, auth_token=None, converter=None, **kwargs):
     if converter is None:
       converter = create_converter(entry)
     http_request = atom.http_core.HttpRequest()
@@ -279,21 +301,48 @@ class VersionTwoClient(GDClient):
                         http_request=http_request, converter=converter, 
                         **kwargs)
 
-  def update(entry, auth_token=None, **kwargs):
+  def update(self, entry, auth_token=None, force=False, **kwargs):
+    """Edits the entry on the server by sending the XML for this entry.
+    
+    Performs a PUT and converts the response to a new entry object with a
+    matching class to the entry passed in.
+
+    Args:
+      entry:
+      auth_token:
+      force: boolean stating whether an update should be forced. Defaults to
+             False. Normally, if a change has been made since the passed in
+             entry was obtained, the server will not overwrite the entry since
+             the changes were based on an obsolete version of the entry.
+             Setting force to True will cause the update to silently
+             overwrite whatever version is present.
+
+    Returns:
+      A new Entry object of a matching type to the entry which was passed in.
+    """
     http_request = atom.http_core.HttpRequest()
     http_request.add_body_part(entry.to_string(), 'application/atom+xml')
+    if force:
+      http_request.headers['If-Match'] = '*'
+    elif hasattr(entry, 'etag') and entry.etag:
+      http_request.headers['If-Match'] = entry.etag
     return self.request(method='PUT', uri=entry.get_edit_url(), 
                         auth_token=auth_token, http_request=http_request, 
                         converter=create_converter(entry), 
                         **kwargs)
 
-  def delete(entry, auth_token=None, **kwargs):
+  def delete(self, entry, auth_token=None, force=False, **kwargs):
+    http_request = atom.http_core.HttpRequest()
+    if force:
+      http_request.headers['If-Match'] = '*'
+    elif hasattr(entry, 'etag') and entry.etag:
+      http_request.headers['If-Match'] = entry.etag
     return self.request(method='DELETE', uri=entry.get_edit_url(), 
                         auth_token=auth_token, **kwargs)
 
-  def batch(feed):
-    #TODO: implement batch requests.
-    pass
+  #TODO: implement batch requests.
+  #def batch(feed, uri, auth_token=None, converter=None, **kwargs):
+  #  pass
 
 
 # Version 1 code.

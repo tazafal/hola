@@ -29,6 +29,8 @@ SIMPLE_V2_FEED_TEST_DATA = """<feed xmlns='http://www.w3.org/2005/Atom'
     xmlns:gd='http://schemas.google.com/g/2005'
     gd:etag='W/"CUMBRHo_fip7ImA9WxRbGU0."'>
   <title>Elizabeth Bennet's Contacts</title>
+  <link rel='next' type='application/atom+xml'
+        href='http://www.google.com/m8/feeds/contacts/.../more' />
   <entry gd:etag='"Qn04eTVSLyp7ImA9WxRbGEUORAQ."'>
     <id>http://www.google.com/m8/feeds/contacts/liz%40gmail.com/base/c9e</id>
     <title>Fitzwilliam</title>
@@ -73,6 +75,10 @@ class SimpleV2FeedTest(unittest.TestCase):
     self.assertEqual(feed.entry[0].get_edit_url(), 
         'http://www.google.com/m8/feeds/contacts/liz%40gmail.com/full/c9e')
     self.assertEqual(feed.entry[1].GetEditUrl(), 'http://example.com/1')
+
+    # Look for Next URLs.
+    self.assertEqual(feed.get_next_url(),
+        'http://www.google.com/m8/feeds/contacts/.../more')
 
 
 def suite():
