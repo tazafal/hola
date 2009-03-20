@@ -18,6 +18,18 @@
 # This module is used for version 2 of the Google Data APIs.
 
 
+"""Provides a client to interact with Google Data API servers.
+
+This module is used for version 2 of the Google Data APIs and is currently
+experimental. This module may change in backwards incompatible ways before
+the release of version 2.0.0. The primary class in this module is GDClient.
+
+  GDClient: handles auth and CRUD operations when communicating with servers.
+  GDataClient: deprecated client for version one services. Will be removed.
+  create_converter: uses a prototype object to create a converter function.
+"""
+
+
 __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
@@ -57,7 +69,67 @@ class ClientLoginFailed(Error):
   pass
 
 
+def v2_entry_from_response(response):
+  """Experimental converter which gets an Atom entry from the response."""
+  return gdata.data.entry_from_string(response.read(), version=2)
+
+
+def v2_feed_from_response(response):
+  """Experimental converter which gets an Atom feed from the response."""
+  return gdata.data.feed_from_string(response.read(), version=2)
+
+
+def create_converter(obj):
+  """Experimental: Generates a converter function for this object's class.
+
+  When updating an entry, the returned object should usually be of the same
+  type as the original entry. Since the client's request method takes a
+  converter funtion as an argument, we need a function which will parse the
+  XML using the desired class.
+
+  Returns:
+    A function which takes an XML string as the only parameter and returns an
+    object of the same type as obj.
+  """
+  return lambda response_body: atom.core.xml_element_from_string(
+      response_body, obj.__class__, version=2, encoding='UTF-8')
+
+
 class GDClient(atom.client.AtomPubClient):
+  """Communicates with Google Data servers to perform CRUD operations.
+
+  This class is currently experimental and may change in backwards
+  incompatible ways.
+
+  This class exists to simplify the following three areas involved in using
+  the Google Data APIs.
+
+  CRUD Operations:
+
+  The client provides a generic 'request' method for making HTTP requests.
+  There are a number of convenience methods which are built on top of
+  request, which include get_feed, get_entry, get_next, post, update, and
+  delete. These methods contact the Google Data servers.
+
+  Auth:
+
+  Reading user-specific private data requires authorization from the user as
+  do any changes to user data. An auth_token object can be passed into any
+  of the HTTP requests to set the Authorization header in the request.
+
+  You may also want to set the auth_token member to a an object which can
+  use modify_request to set the Authorization header in the HTTP request.
+  If you are authenticating using the email address and password, you can
+  use the client_login method to obtain an auth token and set the
+  auth_token member.
+
+  API Versions:
+
+  This client is multi-version capable and can be used with Google Data API
+  version 1 and version 2. The version should be specified by setting the
+  api_version member to a string, either '1' or '2'. 
+  """
+
   # The gsessionid is used by Google Calendar to prevent redirects.
   __gsessionid = None
   api_version = None
@@ -241,36 +313,19 @@ class GDClient(atom.client.AtomPubClient):
 
   ModifyRequest = modify_request
 
-
-def v2_entry_from_response(response):
-  """Experimental converter which gets an Atom entry from the response."""
-  return gdata.data.entry_from_string(response.read(), version=2)
-
-
-def v2_feed_from_response(response):
-  """Experimental converter which gets an Atom feed from the response."""
-  return gdata.data.feed_from_string(response.read(), version=2)
-
-
-def create_converter(obj):
-  """Experimental: Generates a converter function for this object's class.
-  """
-  return lambda response_body: atom.core.xml_element_from_string(
-      response_body, obj.__class__, version=2, encoding='UTF-8')
-
-
-class VersionTwoClient(GDClient):
-  """Experimental client class for use with version two Google Data APIs"""
-
   def get_feed(self, uri, auth_token=None, converter=v2_feed_from_response,
                **kwargs):
     return self.request(method='GET', uri=uri, auth_token=auth_token,
                         converter=converter, **kwargs)
 
+  GetFeed = get_feed
+
   def get_entry(self, url, auth_token=None, converter=v2_entry_from_response,
                 **kwargs):
     return self.request(method='GET', uri=uri, auth_token=auth_token,
                         converter=converter, **kwargs)
+
+  GetEntry = get_entry
 
   def get_next(self, feed, auth_token=None, converter=None, **kwargs):
     """Fetches the next set of results from the feed. 
@@ -289,6 +344,8 @@ class VersionTwoClient(GDClient):
     return self.get_feed(feed.get_next_url(), auth_token=auth_token,
                          converter=converter, **kwargs)
 
+  GetNext = get_next
+
   # TODO: add a refresh method to re-fetch the entry/feed from the server
   # if it has been updated.
 
@@ -300,6 +357,8 @@ class VersionTwoClient(GDClient):
     return self.request(method='POST', uri=uri, auth_token=auth_token,
                         http_request=http_request, converter=converter, 
                         **kwargs)
+
+  Post = post
 
   def update(self, entry, auth_token=None, force=False, **kwargs):
     """Edits the entry on the server by sending the XML for this entry.
@@ -322,23 +381,32 @@ class VersionTwoClient(GDClient):
     """
     http_request = atom.http_core.HttpRequest()
     http_request.add_body_part(entry.to_string(), 'application/atom+xml')
-    if force:
-      http_request.headers['If-Match'] = '*'
-    elif hasattr(entry, 'etag') and entry.etag:
-      http_request.headers['If-Match'] = entry.etag
+    # Include the ETag in the request if this is version 2 of the API.
+    if self.api_version and self.api_version.startswith('2'):
+      if force:
+        http_request.headers['If-Match'] = '*'
+      elif hasattr(entry, 'etag') and entry.etag:
+        http_request.headers['If-Match'] = entry.etag
     return self.request(method='PUT', uri=entry.get_edit_url(), 
                         auth_token=auth_token, http_request=http_request, 
                         converter=create_converter(entry), 
                         **kwargs)
 
+  Update = update
+
   def delete(self, entry, auth_token=None, force=False, **kwargs):
     http_request = atom.http_core.HttpRequest()
-    if force:
-      http_request.headers['If-Match'] = '*'
-    elif hasattr(entry, 'etag') and entry.etag:
-      http_request.headers['If-Match'] = entry.etag
+    # Include the ETag in the request if this is version 2 of the API.
+    if self.api_version and self.api_version.startswith('2'):
+      if force:
+        http_request.headers['If-Match'] = '*'
+      elif hasattr(entry, 'etag') and entry.etag:
+        http_request.headers['If-Match'] = entry.etag
     return self.request(method='DELETE', uri=entry.get_edit_url(), 
-                        auth_token=auth_token, **kwargs)
+                        http_request=http_request, auth_token=auth_token,
+                        **kwargs)
+
+  Delete = delete
 
   #TODO: implement batch requests.
   #def batch(feed, uri, auth_token=None, converter=None, **kwargs):

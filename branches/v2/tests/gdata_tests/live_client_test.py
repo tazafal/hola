@@ -99,13 +99,12 @@ class MockHttpTest(unittest.TestCase):
 class BloggerTest(MockHttpTest):
 
   def setUp(self):
-    self.skip_tests = settings.RUN_LIVE_TESTS == False
-    if not self.skip_tests:
+    if settings.RUN_LIVE_TESTS:
       self.client = gdata.client.GDClient()
       self.configure_client(settings.BloggerConfig, 'BloggerTest')
 
   def test_create_update_delete(self):
-    if self.skip_tests:
+    if not settings.RUN_LIVE_TESTS:
       return
 
     # Either load the recording or prepare to make a live request.
@@ -149,7 +148,7 @@ class BloggerTest(MockHttpTest):
     self.assertEqual(response.status, 200)
 
   def test_use_version_two(self):
-    if self.skip_tests:
+    if not settings.RUN_LIVE_TESTS:
       return
     self.configure_cache('test_use_version_two')
 
@@ -217,13 +216,12 @@ class BloggerTest(MockHttpTest):
 class ContactsTest(MockHttpTest):
 
   def setUp(self):
-    self.skip_tests = settings.RUN_LIVE_TESTS == False
-    if not self.skip_tests:
+    if settings.RUN_LIVE_TESTS:
       self.client = gdata.client.GDClient()
       self.configure_client(settings.ContactsConfig, 'ContactsTest')
 
   def test_crud_version_two(self):
-    if self.skip_tests:
+    if not settings.RUN_LIVE_TESTS:
       return
 
     self.configure_cache('test_crud_version_two')
@@ -266,15 +264,14 @@ class ContactsTest(MockHttpTest):
 class VersionTwoClientContactsTest(MockHttpTest):
 
   def setUp(self):
-    self.skip_tests = settings.RUN_LIVE_TESTS == False
-    if not self.skip_tests:
-      self.client = gdata.client.VersionTwoClient()
+    if settings.RUN_LIVE_TESTS:
+      self.client = gdata.client.GDClient()
+      self.client.api_version = '2'
       self.configure_client(settings.ContactsConfig,
                             'VersionTwoClientContactsTest')
 
   def test_version_two_client(self):
-
-    if self.skip_tests:
+    if not settings.RUN_LIVE_TESTS:
       return
     self.configure_cache('test_version_two_client')
 
