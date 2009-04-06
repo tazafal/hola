@@ -30,7 +30,7 @@ sausage</p:pizza>
   <p:pizza toppings='mushrooms' size='medium'>Mushroom</p:pizza>
   <p:pizza toppings='ham, pineapple' size='extra large'>Hawaiian</p:pizza>
   <p:capacity>25</p:capacity>
-  <p:location>My place.<p:address>123 Imaginary Ln, Sometown MO 63000<p:/address></p:location>
+  <p:location>My place.<p:address>123 Imaginary Ln, Sometown MO 63000</p:address></p:location>
 </entry>
 }}}
 To define classes that parse this XML, we need to begin by defining the classes for the inner elements first. Lets start with the {{{capacity}}} element since it is simple.
