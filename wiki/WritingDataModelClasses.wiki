@@ -35,6 +35,8 @@ sausage</p:pizza>
 }}}
 To define classes that parse this XML, we need to begin by defining the classes for the inner elements first. Lets start with the {{{capacity}}} element since it is simple.
 {{{
+import atom
+
 PIZZA_NAMESPACE = 'http://example.com/pizza/1.0'
 
 class Capacity(atom.AtomBase):
@@ -85,6 +87,8 @@ The new concept introduced in the {{{Location}}} class is the mapping of a child
 
 We have now defined everything but the Entry which contains the data. 
 {{{
+import gdata
+
 class PizzaEntry(gdata.GDataEntry):
   _tag = 'entry'
   _namespace = atom.ATOM_NAMESPACE
