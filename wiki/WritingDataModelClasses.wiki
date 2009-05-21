@@ -1,7 +1,9 @@
 #summary Short tutorial on how to define classes to parse new Atom feeds and entries.
 #labels Phase-Implementation
 
-Describes how to write a class used to parse the XML and convert it into python objects. 
+Describes how to write a class used to parse the XML and convert it into python objects.
+
+Recently updated to use the new data model classes which will be standard in version 2.0 and later of the library.  
 
 = Introduction =
 
@@ -35,6 +37,91 @@ sausage</p:pizza>
 }}}
 To define classes that parse this XML, we need to begin by defining the classes for the inner elements first. Lets start with the {{{capacity}}} element since it is simple.
 {{{
+import atom.core
+
+PIZZA_TEMPLATE = '{http://example.com/pizza/1.0}%s'
+
+class Capacity(atom.core.XmlElement):
+  _qname = PIZZA_TEMPLATE % 'capacity'
+}}}
+That's all we need for capacity. Since this element only has a text node, we don't need to define anything more that it's local tag name and namespace. We do not need to define an __init__ constructor or any other methods because the processing for the XML and the text content is inherited from XmlElement.
+
+Next we define a class for {{{pizza}}} notice that this element has some XML attributes.
+{{{
+class Pizza(atom.core.XmlElement):
+  _qname = PIZZA_TEMPLATE % 'pizza'
+  toppings = 'toppings'
+  size = 'size'
+}}}
+The above class specified the XML attributes (using {{{member = 'XML attribute qname'}}} and the class members which store their values. There is no need to define a custom constructor for the class because XmlElement will map all named arguments to members. For example you can do {{{p = Pizza(size='Large', toppings='cheese, pepperoni')}}}.
+
+Next we'll define classes for {{{location}}} and {{{address}}} which are nested elements. 
+{{{
+class Address(atom.core.XmlElement):
+  _qname = PIZZA_TEMPLATE % 'address'
+
+class Location(atom.core.XmlElement):
+  _qname = PIZZA_TEMPLATE % 'location'
+  address = Address
+}}}
+The new concept introduced in the {{{Location}}} class is the mapping of a child element to the class used to parse it's XML and the member the child element is stored in. The classes are mapped by setting the member to the XML element's class (member = XmlClass). Instantiating a location element with an address could look like this:
+{{{l = Location(address=Address(text='my house'), text='Meet here!')}}}
+
+We have now defined everything but the Entry which contains the data. 
+{{{
+import gdata.data
+import atom.data
+
+class PizzaEntry(gdata.data.GDEntry):
+  _qname = atom.data.ATOM_TEMPLATE % 'entry'
+  pizza = [Pizza]
+  capacity = Capacity
+  location = Location
+}}}
+Note in the above that the mapping for the {{{pizza}}} XML element specifies {{{[Pizza]}}} to represent a list of {{{Pizza}}} class instances. The entry can contain multiple {{{pizza}}} elements, and this is represented by enclosing a list of Classes instead of just the Class. 
+
+You should also define a feed to contain the new entry you defined. This might look something like this:
+{{{
+class PizzaFeed(gdata.data.GDFeed):
+  _qname = atom.data.ATOM_TEMPLATE % 'feed'
+  entry = [PizzaEntry]
+}}}
+
+You can now use the Google Data client object to communicate with a Pizza Party server. 
+{{{
+import gdata.client
+
+pizza_client = gdata.client.GDClient()
+# Authorize this app to act on the user's behalf.
+# In this example we'll use ClientLogin with the username and password.
+pizza_client.client_login(username, password, 'pizza', 'Jeff\'s Pizza Client!')
+
+# Find pizza parties.
+feed = pizza_client.get_feed('http://example.com/PizzaParties')
+for party in feed.entry:
+  print party.location.address.text
+  ...
+
+# Create a new pizza party.
+new_party = PizzaEntry(location=Location(text='over there'))
+new_party.pizza.append(Pizza(size='L', toppings='mushrooms'))
+new_party.pizza.append(Pizza(size='M', toppings='sausage'))
+created = pizza_client.post(new_party, 'http://example.com/PizzaParties')
+
+# Modify and update the party.
+# We needed more pizza!
+created.pizza.append(Pizza(size='XL', toppings='pepperoni'))
+updated = pizza_client.update(created)
+
+# Then we decided to cancel, so we delete the entry.
+pizza_client.delete(updated)
+}}}
+
+= Code snippets for v1 classes =
+
+This wiki was updated in anticipation of the v 2.0 release of the library, the old code samples for the version 1.x are below and correspond to the above classes.
+
+{{{
 import atom
 
 PIZZA_NAMESPACE = 'http://example.com/pizza/1.0'
@@ -42,11 +129,8 @@ PIZZA_NAMESPACE = 'http://example.com/pizza/1.0'
 class Capacity(atom.AtomBase):
   _tag = 'capacity'
   _namespace = PIZZA_NAMESPACE
-}}}
-That's all we need for capacity. Since this element only has a text node, we don't need to define anything more that it's local tag name and namespace. We do not need to define an __init__ constructor or any other methods because the processing for the XML and the text content is inherited from AtomBase.
 
-Next we define a class for {{{pizza}}} notice that this element has some XML attributes.
-{{{
+
 class Pizza(atom.AtomBase):
   _tag = 'pizza'
   _namespace = PIZZA_NAMESPACE
@@ -65,7 +149,6 @@ class Pizza(atom.AtomBase):
 }}}
 The above class specified the XML attributes (using {{{_attributes['XML_Attribute_Name']}}} and the class members which store their values (the attributes dictionary gets the value {{{'member_name'}}}). The constructor for the class needs to accept values for the attribute members as parameters (self.member_name). 
 
-Next we'll define classes for {{{location}}} and {{{address}}} which are nested elements. 
 {{{
 class Address(atom.AtomBase):
   _tag = 'address'
@@ -83,9 +166,9 @@ class Location(atom.AtomBase):
     atom.AtomBase.__init__(self, extension_elements=extension_elements,
         extension_attributes=extension_attributes, text=text)
 }}}
-The new concept introduced in the {{{Location}}} class is the mapping of a child element to the class used to parse it's XML and the member the child element is stored in. The classes are mapped in a dictionary in the form {{{_children['{namespace}tag'] = ('member_name', MemberClass)}}}
 
-We have now defined everything but the Entry which contains the data. 
+Here is the code for the entry class for our Pizza feed.
+
 {{{
 import gdata
 
@@ -112,10 +195,7 @@ class PizzaEntry(gdata.GDataEntry):
         extension_elements=extension_elements, 
         extension_attributes=extension_attributes, text=text)
 }}}
-Note in the above that the mapping for the {{{pizza}}} XML element specifies {{{[Pizza]}}} to represent a list of {{{Pizza}}} class instances. The entry can contain multiple {{{pizza}}} elements, and this is represented by enclosing a list of Classes instead of just the Class. 
-
-We also need to define functions to convert a string to an instance of one of the above classes. These functions are especially useful in CRUD operations. The Get, Post, Put, and Delete methods take an optional converter function and you could use one of these to convert the server's response into the desired object.
-
+Functions to convert an XML string to the desired object.
 {{{
 def CapacityFromString(xml_string):
   return atom.CreateClassFromXMLString(Capacity, xml_string)
