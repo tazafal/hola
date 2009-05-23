@@ -7,8 +7,6 @@
   * Use unicode encoding by default
 
 ===Service Specific Library===
-  * Book Search API (started)
-  * Analytics API (started)
   * Notebook Module
 
   
