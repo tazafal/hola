@@ -81,8 +81,7 @@ class XTest(unittest.TestCase):
   def setUp(self):
     self.client = None
     if conf.settings.RUN_LIVE_TESTS:
-      # Example: gdata.client.GDClient()
-      self.client = <desired_client_class>() 
+      self.client = <desired_client_class>() # Ex: gdata.client.GDClient()
       # Make sure there is a Config entry for the service you 
       # want to test in src/gdata/test_config_template.py
       conf.configure_client(
