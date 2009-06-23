@@ -1,5 +1,5 @@
 #summary Design Document for the Google data Python Client Library.
-#labels Phase-Design
+#labels Phase-Design,Deprecated
 
 = Introduction =
 
