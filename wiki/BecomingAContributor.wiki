@@ -18,6 +18,6 @@ Follow either of the two links above to access the appropriate CLA and instructi
   # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the Google Data Python Client Library [http://code.google.com/p/gdata-python-client/issues/list issue tracker]. Please don't mix more than one logical change per submittal, because it makes the history hard to follow. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please create one.
   # Also, coordinate with team members that are listed on the issue in question. This ensures that work isn't being duplicated and communicating your plan early also generally leads to better patches.
   # Ensure that your code adheres to the [http://code.google.com/p/gdata-python-client/wiki/StyleGuide Google Data Python source code style].
-  # Ensure that there are unit tests for your code.
+  # Ensure that there are unit tests for your code. For templates to help you get started with new unit tests, see the CodeTemplates page.
   # Sign a Contributor License Agreement.
   # Attach the code (including unit tests) to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff).
