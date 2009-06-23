@@ -1,4 +1,4 @@
-#summary Discribes the new way data model classes are defined in version 1.0.8 and later.
+#summary Describes the new way data model classes are defined in version 1.0.8 and later.
 
 = Introduction =
 
