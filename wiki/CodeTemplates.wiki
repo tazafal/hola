@@ -1,0 +1,112 @@
+#summary Provides template files for different types of unit tests and samples.
+#labels Phase-Implementation
+
+= Introduction =
+
+This page is a resource for anyone planning to write a sample app or series of unit tests which interact with a Google Data service. 
+
+= Data Model Unit Test =
+
+Data model tests cover code written in the gdata.x.data modules and they should not include any communication with the external server. The focus is on correct formatting and preservation of information in the XML parsing/generating code.
+
+{{{
+#!/usr/bin/env python
+#
+# Copyright (C) <year> Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import unittest
+import gdata.test_config as conf
+<imports>
+
+
+class XTest(unittest.TestCase):
+
+  def test_something_here(self):
+    ...
+
+
+class YTest(unittest.TestCase):
+  ...
+
+
+def suite():
+  return conf.build_suite([XTest, YTest, ...])
+
+
+if __name__ == '__main__':
+  unittest.main()
+}}}
+
+
+= Service Client Unit Test =
+
+Client tests are designed to make live requests to the server and verify correctness of the code in the gdata.x.client module. Because live HTTP requests to the server can be time consuming, the test configuration module provides several time saving options such as caching and replaying server responses from a previous test session run and allowing tests which require server contact to be skipped entirely. For this reason the client unit tests require additional setUp and tearDown code, as well as a recommended few lines in each test method. Begin with the template below as an example to take advantage of the time saving configuration features.
+
+{{{
+#!/usr/bin/env python
+#
+# Copyright (C) <year> Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import unittest
+import gdata.test_config as conf
+<imports>
+
+class XTest(unittest.TestCase):
+
+  def setUp(self):
+    self.client = None
+    if conf.settings.RUN_LIVE_TESTS:
+      # Example: gdata.client.GDClient()
+      self.client = <desired_client_class>() 
+      # Make sure there is a Config entry for the service you 
+      # want to test in src/gdata/test_config_template.py
+      conf.configure_client(
+          self.client, conf.settings.XConfig, 'XTest')
+
+  def tearDown(self):
+    conf.close_client(self.client)
+
+  def test_xyz(self):
+    if not conf.settings.RUN_LIVE_TESTS:
+      return
+    # Either load the recording or prepare to make a live request.
+    conf.configure_cache(self.client, 'test_xyz')
+    ...
+
+
+def suite():
+  return conf.build_suite([XTest, ...])
+
+
+if __name__ == '__main__':
+  unittest.main()
+}}}
+
+= Command Line Sample =
+
+= App Engine Sample App =
