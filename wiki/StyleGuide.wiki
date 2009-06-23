@@ -78,3 +78,7 @@ def module_function():
 if __name__ == '__main__':
   print 'Running this module as a script.'
 }}}
+
+== Unit Tests == 
+
+Bug fixes and new modules should be accompanied with test cases in the appropriate test modules. The test module directory structure mirrors that of the src directory. For example, unit tests for the {{{gdata.data}}} module live in {{{tests/gdata_tests/data_test.py}}}. If you have written a new module, you can speed up the process of writing you unit tests by using one of the available CodingTemplates.
