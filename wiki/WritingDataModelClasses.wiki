@@ -124,6 +124,10 @@ updated = pizza_client.update(created)
 pizza_client.delete(updated)
 }}}
 
+= Next Steps =
+
+Now that you've written your data model classes, why not write some unit tests? To help you get started, some examples are provided on the CodeTemplates page.
+
 = Code snippets for v1 classes =
 
 This wiki was updated in anticipation of the v 2.0 release of the library, the old code samples for the version 1.x are below and correspond to the above classes.
