@@ -71,10 +71,10 @@ Client tests are designed to make live requests to the server and verify correct
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import unittest
 import gdata.test_config as conf
 <imports>
+
 
 class XTest(unittest.TestCase):
 
