@@ -104,7 +104,8 @@ pizza_client = gdata.client.GDClient()
 pizza_client.client_login(username, password, 'pizza', 'Jeff\'s Pizza Client!')
 
 # Find pizza parties.
-feed = pizza_client.get_feed('http://example.com/PizzaParties')
+feed = pizza_client.get_feed('http://example.com/PizzaParties', 
+                             desired_class=PizzaFeed)
 for party in feed.entry:
   print party.location.address.text
   ...
