@@ -1,5 +1,5 @@
 #summary Designing a token_store for App Engine apps.
-#labels Phase-Design
+#labels Phase-Design,Deprecated
 
 = Introduction =
 
