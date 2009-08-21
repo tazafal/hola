@@ -8,7 +8,7 @@ Releasing a new download requires a few steps to be performed. For each release,
 = Steps =
 
   # Write release notes for the new release in {{{RELEASE_NOTES.txt}}}.
-  # Update the version number in {{{setup.py}}} and in the user agent constant {{{USER_AGENT}}} in {{{src/atom/http_interface.py}}}.
+  # Update the version number in {{{setup.py}}} and in the user agent constant {{{USER_AGENT}}} in {{{src/atom/http_interface.py}}} and {{{src/atom/client.py}}}.
   # Regenerate the pydoc documentation pages.
     # if any new files have been added in this release, list them in the pydoc shell script: {{{pydocs/generate_docs}}}
     # run the {{{pydocs/generate_docs}}} script
