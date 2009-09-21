@@ -80,18 +80,18 @@ class XTest(unittest.TestCase):
 
   def setUp(self):
     self.client = None
-    if conf.settings.RUN_LIVE_TESTS:
+    if conf.options.get_value('runlive') == 'true':
       self.client = <desired_client_class>() # Ex: gdata.client.GDClient()
-      # Make sure there is a Config entry for the service you 
-      # want to test in src/gdata/test_config_template.py
-      conf.configure_client(
-          self.client, conf.settings.XConfig, 'XTest')
+      # Pass in the client oject, name of the TestCase as a string, and the
+      # service name as used in ClientLogin, for example 'blogger', 'wise',
+      # 'cp', 'local', etc.
+      conf.configure_client(self.client, 'XTest', 'service name') 
 
   def tearDown(self):
     conf.close_client(self.client)
 
   def test_xyz(self):
-    if not conf.settings.RUN_LIVE_TESTS:
+    if not conf.options.get_value('runlive') == 'true':
       return
     # Either load the recording or prepare to make a live request.
     conf.configure_cache(self.client, 'test_xyz')
@@ -103,7 +103,7 @@ def suite():
 
 
 if __name__ == '__main__':
-  unittest.main()
+  unittest.TextTestRunner().run(suite())
 }}}
 
 = Command Line Sample =
