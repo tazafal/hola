@@ -1,0 +1,13 @@
+#summary Exploratory proposal for always requesting data in the JSON format.
+
+= Introduction =
+
+With the release of JSONC there is a more streamlined data format which we now support in {{{gdata.core.Jsonc}}}
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
