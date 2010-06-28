@@ -1,8 +1,8 @@
 #summary V3 Client Design
 
-=Apiary Python Client Design=
+=V3 Python Client Design=
 
-The new Python client library will be used solely for APIary built APIs and will have no backward compatibility with non-APIary APIs. Learning from the past several years of development with the V1 and V2 versions of the client libraries, this version of the library with eschew hand-coded per-API classes.
+The new Python client library will be used solely for discovery based APIs and will have no backward compatibility with non-discovery based APIs. Learning from the past several years of development with the V1 and V2 versions of the client libraries, this version of the library with eschew hand-coded per-API classes.
 
 ==Requirements==
 
