@@ -201,22 +201,34 @@ Authentication will be handled by using the python-oauth2 open source library. T
 
 The `apiclient.build` method starts constructing a simple direct interface to the API, which means that every call executes synchronously, only returning when it is done. This is a good default and easy to learn for people new to the library. There will also be a more complex `apiclient.build_async` method that constructs a more complex interface to the API, which uses the Command pattern for request objects. The asynchronous interface will allow batching request objects into a single batch request, and also support submitting requests objects into an asynchronous queue to be processed. Jeff Scudder already has a good start on such objects in an experimental library.
 
-==Dynamic vs Static Classes==
+The asynchronous support should include an optional exponential backoff to retry requests that fail with 408, 503, or 504.
 
-The library will have a command line program that can be used to generate a static library from a discovery document. This will be helpful for users of IDEs which can use that generated code to do auto-completion and code browsing. Note that the library will not ship with any pre-generated classes. The command line program will be able to generate both synchronous and asynchronous versions of the client classes, and will have options to control which kind is generated.
+==IDE Support==
+
+Since the objects in the library are constructed dynamically based on the contents of the discovery document there will be very little native support an IDE will be able to provide as far as doc strings and auto completion. It is an open question if, and how, to support IDEs using this library.
+
+==Discovery==
+
+The objects returned from `apiclient.build()` are constructed from the information in the discovery document. The discovery document should be cached to avoid introducing excessive latency into situations where the calling application may have a short lifetime, such as when running on App Engine.
 
 ==Model==
 
 The model object is responsible for modifying outgoing requests to add an appropriate `Accept` header and `Content-Type` header if appropriate. It is also responsible for serializing model objects to and from the wire format. Finally it is responsible for providing prototype objects for non-GET methods. For instance, in the example above the activities collection the `insert` method takes a body, which is the model object to insert into the collection. There will be an `activities.insert_body()` method the returns an instance of an object to insert into the collection. The prototype object is built up from the discovery schema for that method.
 
-==Third Party Libraries==
+==Python==
 
+The oldest supported version will be Python 2.4.
+
+==Third Party Libraries==
 
 The following third-party libraries will be used by the client library:
 
+  * simplejson - MIT License
   * httplib2 - MIT License
   * python-oauth2 - MIT License
   * uri-templates - Apache 2.0
+
+The simplejson library will only be required for Python 2.4 and 2.5 as simplejson is included in Python 2.6 and later.
 
 ==JSON-RPC==
 
