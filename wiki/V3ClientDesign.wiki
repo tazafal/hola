@@ -186,6 +186,19 @@ u'tag:google.com,2010:buzz:z133s5h4bqbxczdh304cfb5bqovngjr51ko0k'}], u'updated':
 
 >>> activitylist['items'][0]['title']
 First Post!
+
+>>> newitem = {
+    u'kind': u'buzz#activity', 
+    u'object': {
+      u'content': u'Just a test note to show that insert is working.', 
+      u'type': u'note', 
+    }
+  }
+
+>>> activity = p.activities().insert(userId='@me', body=newitem)
+>>> print activity['published']
+2010-07-02T17|28| 59.000Z
+
 }}}
 
 
